@@ -4,7 +4,7 @@ Thermal Map shows the heat inside a MacBook Air the way a thermal camera would. 
 
 ![Thermal Map, internal view](docs/screenshot-internal.png)
 
-The demo video is attached to the [latest release](https://github.com/Louistuis/thermal-map/releases/latest).
+Watch the [demo video](https://github.com/Louistuis/thermal-map/releases/download/v1.0/thermal-map-demo-1080p.mp4) (43 seconds, recorded from live data).
 
 ## Features
 
