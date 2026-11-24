@@ -97,8 +97,6 @@ struct HistoryPoint { var soc: Double; var pmu: Double; var battery: Double; var
 
 final class ThermalModel: ObservableObject {
     nonisolated(unsafe) static var renderMode = false
-    /// The one Mac this layout and model were built for.
-    static let targetModel = "Mac15,12"
     /// This Mac's model identifier (THERMALMAP_FAKE_MODEL overrides it, to test the notice).
     static let hwModel: String = {
         if let f = ProcessInfo.processInfo.environment["THERMALMAP_FAKE_MODEL"] { return f }
@@ -108,7 +106,6 @@ final class ThermalModel: ObservableObject {
         sysctlbyname("hw.model", &buf, &size, nil, 0)
         return String(cString: buf)
     }()
-    static var isTargetMac: Bool { hwModel == targetModel }
     /// THERMALMAP_ALWAYS_RENDER=1 keeps the map updating while the window is hidden (flicker tests).
     static let alwaysRender = ProcessInfo.processInfo.environment["THERMALMAP_ALWAYS_RENDER"] == "1"
     // sidebar data (2 Hz)

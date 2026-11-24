@@ -4,7 +4,7 @@ set -e
 cd "${0:A:h}"
 APP="build/Thermal Map.app"
 mkdir -p build
-swiftc -O -swift-version 5 Sources/*.swift -o build/ThermalMap
+swiftc -O -swift-version 5 Sources/**/*.swift -o build/ThermalMap
 if [[ ! -f build/AppIcon.icns ]]; then
   swiftc -O Tools/icon.swift -o build/iconmaker && ./build/iconmaker build/icon1024.png
   rm -rf build/AppIcon.iconset && mkdir build/AppIcon.iconset

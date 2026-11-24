@@ -103,6 +103,8 @@ extension View {
 
 struct ContentView: View {
     @ObservedObject var m: ThermalModel
+    /// remembered per Mac model, so the notice stays closed once closed
+    @AppStorage("modelNoticeDismissed." + ThermalModel.hwModel) private var noticeDismissed = false
     var body: some View {
         HStack(spacing: 0) {
             ZStack(alignment: .bottom) {
@@ -112,8 +114,12 @@ struct ContentView: View {
                         .padding(.bottom, 64)
                 }
                 Legend(m: m).padding(.bottom, 18)
-                if !ThermalModel.isTargetMac {
-                    VStack { ModelNotice().padding(.top, 70); Spacer() }
+                if !MacModel.isSupported && !noticeDismissed {
+                    VStack {
+                        ModelNotice { withAnimation(UI.spring) { noticeDismissed = true } }.padding(.top, 70)
+                        Spacer()
+                    }
+                    .transition(.opacity.combined(with: .move(edge: .top)))
                 }
             }
             .background(LinearGradient(colors: [UI.bgTop, UI.bgBottom], startPoint: .top, endPoint: .bottom))
@@ -213,16 +219,37 @@ struct LiveDot: View {
     }
 }
 
-/// Shown on any Mac other than the 13-inch MacBook Air with M3: the sensors are real, the board is not.
+/// Shown on a Mac that has no layout of its own yet. Small, closable, and points to the guide in the repo.
 struct ModelNotice: View {
+    var close: () -> Void
+    static let guide = URL(string: "https://github.com/Louistuis/thermal-map/blob/main/docs/ADD-A-MAC.md")!
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(alignment: .top, spacing: 10) {
             Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Color(red: 1, green: 0.78, blue: 0.35))
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Made for the 13-inch MacBook Air with M3").font(UI.text(12.5, .semibold))
-                Text("This Mac is \(ThermalModel.hwModel). The readings are real, but the board, sensor positions and heat model are the M3 Air's, so the map won't match this machine.")
+                .padding(.top, 1)
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Made for the \(MacModel.macBookAir13M3.name)").font(UI.text(12.5, .semibold))
+                Text("This Mac is \(ThermalModel.hwModel). The readings are real, but the map shows the M3 Air's board, so it won't match this machine.")
                     .font(UI.text(11)).foregroundStyle(UI.secondary).fixedSize(horizontal: false, vertical: true)
+                Group {
+                    if ThermalModel.renderMode {   // headless renders cannot draw Link
+                        Text("Add your Mac to Thermal Map  →").font(UI.text(11, .semibold)).foregroundStyle(UI.accent)
+                    } else {
+                        Link(destination: ModelNotice.guide) {
+                            Text("Add your Mac to Thermal Map  →").font(UI.text(11, .semibold)).foregroundStyle(UI.accent)
+                        }
+                    }
+                }
+                .padding(.top, 2)
             }
+            Spacer(minLength: 4)
+            Button(action: close) {
+                Image(systemName: "xmark").font(.system(size: 10, weight: .bold)).foregroundStyle(UI.secondary)
+                    .frame(width: 22, height: 22)
+                    .background(Circle().fill(Color.white.opacity(0.08)))
+            }
+            .buttonStyle(.plain)
+            .help("Close")
         }
         .padding(.horizontal, 14).padding(.vertical, 10)
         .frame(maxWidth: 560, alignment: .leading)
@@ -244,7 +271,7 @@ struct Header: View {
                     Text("Thermal Map").font(UI.text(15, .semibold))
                     LiveDot()
                 }
-                Text("Made for the 13-inch MacBook Air with M3  ·  \(m.side == .bottom ? "seen from below, like an IR camera" : "seen from above, through the keyboard")")
+                Text("Made for the \(MacModel.active.name)  ·  \(m.side == .bottom ? "seen from below, like an IR camera" : "seen from above, through the keyboard")")
                     .font(UI.text(11.5)).foregroundStyle(UI.secondary)
                     .contentTransition(.opacity)
             }
@@ -451,7 +478,7 @@ struct ChassisView: View {
                 }
             }
             if m.side == .bottom {
-                for c in [CGPoint(x: 24, y: 20), CGPoint(x: 280, y: 20), CGPoint(x: 24, y: 195), CGPoint(x: 280, y: 195)] {
+                for c in Board.feet {
                     let v = map.pt(c); let r = 5.5 * s
                     ctx.stroke(Path(ellipseIn: CGRect(x: v.x - r, y: v.y - r, width: 2 * r, height: 2 * r)), with: .color(.white.opacity(0.24)), lineWidth: 0.7)
                 }
@@ -595,7 +622,7 @@ struct Sidebar: View {
                 sensorList
                 VStack(alignment: .leading, spacing: 6) {
                     Text("\(m.smcKeyCount) SMC keys scanned, \(m.smcTempCount) are temperatures, plus \(m.hidCount) HID thermal services. Read in \(UI.fmt(m.lastSampleMs)) ms once a second; the map updates five times a second.")
-                    Text("Thermal Map, its heat model and its board layout were made specifically to show the heat inside the 13-inch MacBook Air with M3 (Mac15,12).")
+                    Text("Thermal Map, its heat model and its board layout were made specifically to show the heat inside the 13-inch MacBook Air with M3 (Mac15,12). Other Macs can be added: see docs/ADD-A-MAC.md in the repo.")
                     Text("The layout is calibrated to Apple's Self Service Repair manual for this machine (J613), within about 3 to 5 mm. Each reading is pinned at the part it measures, and a two-layer heat-conduction model fills in everything between them. Bottom case shows the modelled outer aluminium, which is what an IR camera would see.")
                 }
                 .font(UI.text(10.5)).foregroundStyle(UI.tertiary).lineSpacing(2)

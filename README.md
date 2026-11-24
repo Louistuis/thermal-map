@@ -106,13 +106,11 @@ What is still inferred:
 
 ## Contributing
 
-If you have a Mac, any Mac, you are welcome to build on this project. Open an issue or a pull request.
+If you own a Mac, any Mac, you are welcome to build on this project. Open an issue or a pull request.
 
-The most wanted work is support for other Mac models. Each one needs:
+The most wanted work is **support for other Mac models**. Each model is one file in `Sources/Models/`: the board outlines, where each sensor sits, and heat-model constants fitted to your own readings. **[docs/ADD-A-MAC.md](docs/ADD-A-MAC.md)** walks through all of it: identifying your Mac, dumping its sensors with `--dump`, working out what each key measures, mapping the board from Apple's Self Service Repair manual, and proving the result with `--snapshot`, `--score` and `--fit`.
 
-1. A board map in `Sources/Layout.swift`: the outlines of the board, heat sink or fans, chips, battery cells and trackpad, in millimetres. Apple's Self Service Repair manuals and teardown photos are good sources.
-2. Sensor placements for that model's keys. Run the app and look at the sensor list to see which keys your Mac has.
-3. A quick accuracy check: save a few snapshots with `--snapshot` (idle, under load, cooling down) and run `--score` and `--fit` on them. Include the numbers in your pull request.
+Thermal Map was built with [Claude Code](https://claude.com/claude-code) using **Claude Opus 5.5 at high effort**, and the guide ends with a prompt you can use to add your own Mac the same way.
 
 Other ideas: fans and fan speeds on MacBook Pro, a menu bar view, recording and replay, and a calibration against a real IR camera.
 
@@ -120,13 +118,15 @@ Other ideas: fans and fan speeds on MacBook Pro, a menu bar view, recording and 
 
 ```
 Sources/Sensors.swift     SMC and HID readers
-Sources/Layout.swift      board geometry and sensor placements
+Sources/MacModel.swift    model registry, sensor placement rules
+Sources/Models/           one file per Mac model (board, sensors, fitted constants)
 Sources/HeatSolver.swift  two-layer heat-conduction model
 Sources/Calibrate.swift   snapshots, held-out accuracy test and constant fitting
 Sources/Model.swift       sampling, smoothing, field, isotherms, palettes
 Sources/Views.swift       SwiftUI interface
 Sources/Recorder.swift    headless frame recorder
-Sources/main.swift        app entry and headless modes
+Sources/main.swift        app entry and headless modes (--render, --record, --dump, --snapshot, --score, --fit)
+docs/ADD-A-MAC.md         how to add another Mac
 calib/                    snapshots used for the accuracy numbers
 Tools/                    icon, layout calibration notes, demo video scripts
 film/                     the demo video (Remotion)

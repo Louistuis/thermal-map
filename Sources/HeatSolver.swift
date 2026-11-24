@@ -188,16 +188,6 @@ final class HeatSolver {
 }
 
 extension HeatSolver {
-    /// Fitted 2026-11-24 with `--fit` on idle, 70 s full-CPU load and cooling snapshots (calib/*.json), after the
-    /// heat-sink sensors were placed from their readings (Layout.swift). Held-out passive sensors (heat sink,
-    /// battery, gas gauge, palm rests): RMS error 5.8 -> about 2 C, mean absolute error 4.7 -> about 1.7 C.
-    /// gSink stays at its physical value: the fit preferred 0.004, which barely changes the internal score but
-    /// leaves the bottom case unrealistically cold (it has no sensor of its own to fit against).
-    static let fitted: Params = {
-        var p = Params()
-        p.kSink = 113; p.kBoard = 7.56; p.kChip = 11.3; p.kTrackpad = 35.8; p.kBattery = 47.7
-        p.gBattery = 0.003; p.gBase = 0.002; p.gSink = 0.015
-        p.hInt = 0.0159; p.innerAir = 4
-        return p
-    }()
+    /// The active Mac model's fitted constants (see Sources/Models/ and `--fit`).
+    static var fitted: Params { MacModel.active.params }
 }

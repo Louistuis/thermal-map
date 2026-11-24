@@ -30,6 +30,29 @@ enum Calibrate {
         app.run()
     }
 
+    /// `--dump`: every sensor this Mac exposes, tab separated, with where the active layout puts it.
+    /// The starting point for adding a new Mac (docs/ADD-A-MAC.md).
+    static func dump() {
+        let app = NSApplication.shared
+        app.setActivationPolicy(.prohibited)
+        ThermalModel.renderMode = true
+        let model = ThermalModel()
+        model.start()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            print("# hw.model \(ThermalModel.hwModel)  layout: \(MacModel.isSupported ? MacModel.active.name : "none yet (showing \(MacModel.active.name))")")
+            print("source\tkey\ttype\tvalue_C\tzone\tx_mm\ty_mm\tin_field")
+            for s in model.liveSensors.sorted(by: { ($0.source, $0.key) < ($1.source, $1.key) }) {
+                let v = s.valid ? String(format: "%.2f", s.raw ?? .nan) : "-"
+                let p = s.placement
+                print([s.source, s.key, s.type, v, p?.zone ?? "unmapped",
+                       p.map { String(format: "%.1f", $0.point.x) } ?? "-", p.map { String(format: "%.1f", $0.point.y) } ?? "-",
+                       p.map { $0.inField ? "yes" : "no" } ?? "-"].joined(separator: "\t"))
+            }
+            exit(0)
+        }
+        app.run()
+    }
+
     static let scoredPrefixes = ["Th", "TB", "TG", "Ts0P", "Ts1P"]
 
     /// Groups of scored pins, linked when closer than 13 mm, so a sensor is never "predicted" from its twin.
