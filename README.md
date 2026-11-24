@@ -2,6 +2,8 @@
 
 Thermal Map shows the heat inside a MacBook Air the way a thermal camera would. It reads all 205 temperature sensors in the 13-inch MacBook Air with M3, places each reading on the part it measures, and solves how heat flows between them. The result is a live, smooth picture of the M3, the heat sink, the logic board and the battery, updated five times a second.
 
+> **Made for one Mac.** Thermal Map, its heat model and its board layout were built specifically to show the heat inside the **13-inch MacBook Air with M3** (Mac15,12). The part outlines, sensor positions and model constants all belong to that machine. It runs on other Apple silicon Macs, but they have a different board, so the map would be wrong there, and the app says so. Layouts for other models are welcome, see [Contributing](#contributing).
+
 ![Thermal Map, internal view](docs/screenshot-internal.png)
 
 Watch the [demo video](https://github.com/Louistuis/thermal-map/releases/download/v1.0/thermal-map-demo-1080p.mp4) (43 seconds, recorded from live data).
