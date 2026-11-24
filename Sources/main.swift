@@ -26,6 +26,8 @@ if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--render=") }) {
     if CommandLine.arguments.contains("--top") { model.side = .top }
     if CommandLine.arguments.contains("--surface") { model.mode = .surface }
     if CommandLine.arguments.contains("--labels") { model.showLabels = true }
+    if CommandLine.arguments.contains("--no-isotherms") { model.showIsotherms = false }
+    if CommandLine.arguments.contains("--no-parts") { model.showParts = false }
     if let h = CommandLine.arguments.first(where: { $0.hasPrefix("--hl=") }) { model.highlighted = String(h.dropFirst(5)) }
     model.start()
     DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {

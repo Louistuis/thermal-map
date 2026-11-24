@@ -351,6 +351,7 @@ struct ChassisView: View {
                     FieldLayer(frame: prev, map: map, isotherms: isotherms).opacity(fade)
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .onAppear { last = frame }
             .onChange(of: frame.serial) {
                 guard !ThermalModel.renderMode else { last = frame; return }
@@ -404,6 +405,9 @@ struct ChassisView: View {
                     }
                 }
             }
+            // fill the whole map area: without the isotherm canvas this stack would shrink to the image
+            // and be centred, shifting the heat image off the chassis
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
     }
 
@@ -498,7 +502,7 @@ struct ChassisView: View {
                     // on the bottom-case view the readings are internal, so they are marked, not coloured
                     ctx.stroke(dot, with: .color(.white.opacity(m.mode == .surface ? 0.45 : 0.7)), lineWidth: 0.7)
                 } else {
-                    ctx.fill(dot, with: .color(m.palette.color((sn.value - f.lo) / span)))
+                    ctx.fill(dot, with: .color(m.palette.color(Swift.max(0.12, (sn.value - f.lo) / span))))
                     ctx.stroke(dot, with: .color(.white.opacity(0.85)), lineWidth: 0.7)
                 }
                 if m.showLabels && sn.source == "SMC" {
@@ -680,7 +684,7 @@ struct Sidebar: View {
                     HStack(alignment: .firstTextBaseline, spacing: 1) {
                         Text(UI.fmt(c.1)).font(UI.rounded(27, .medium).monospacedDigit())
                             .contentTransition(.numericText(value: c.1.isNaN ? 0 : c.1))
-                            .animation(.smooth(duration: 0.5), value: c.1)
+                            .animation(.smooth(duration: 0.28), value: c.1)
                         Text("°").font(UI.rounded(20)).foregroundStyle(UI.secondary)
                     }
                     // position of this reading in the current colour range
@@ -882,7 +886,8 @@ struct HistoryChart: View {
                 let lo = floor(lo0 - 1), hi = ceil(hi0 + 1)
                 func y(_ v: Double) -> CGFloat { size.height * (1 - (v - lo) / (hi - lo)) }
                 func x(_ i: Int) -> CGFloat { size.width * CGFloat(i + 120 - history.count) / 119 }
-                for g in stride(from: ceil(lo / 10) * 10, through: hi, by: 10) {
+                let gstep: Double = [5.0, 10, 20, 50].first { $0 * size.height / (hi - lo) >= 16 } ?? 50
+                for g in stride(from: ceil(lo / gstep) * gstep, through: hi, by: gstep) {
                     var p = Path(); p.move(to: CGPoint(x: 0, y: y(g))); p.addLine(to: CGPoint(x: size.width, y: y(g)))
                     ctx.stroke(p, with: .color(.white.opacity(0.06)), style: StrokeStyle(lineWidth: 0.5, dash: [2, 3]))
                     ctx.draw(Text("\(Int(g))°").font(UI.text(9).monospacedDigit()).foregroundStyle(UI.tertiary), at: CGPoint(x: 4, y: y(g) - 6), anchor: .leading)

@@ -266,10 +266,12 @@ final class ThermalModel: ObservableObject {
             let aspect = block.width / block.height
             let cols = Swift.max(1, Int((Double(n) * aspect).squareRoot().rounded(.up)))
             let rows = Int((Double(n) / Double(cols)).rounded(.up))
+            // keep the top band of each block free for its label
+            let top = block.minY + Swift.min(0.07, block.height * 0.3), hgt = block.maxY - top
             for (i, id) in members.enumerated() {
                 let c = i % cols, rr = i / cols
                 dieSlots[id] = CGPoint(x: block.minX + block.width * (Double(c) + 0.5) / Double(cols),
-                                       y: block.minY + block.height * (Double(rr) + 0.5) / Double(rows))
+                                       y: top + hgt * (Double(rr) + 0.5) / Double(rows))
             }
         }
     }
