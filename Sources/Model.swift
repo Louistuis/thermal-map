@@ -34,6 +34,7 @@ struct Frame {
     var dieLo: Double = 30, dieHi: Double = 80
     var corePeak: Double = .nan
     var ambient: Double = 25
+    var serial = 0                   // bumps every field update; the map crossfades between serials
 }
 
 /// One isotherm level as line segments (pairs of points), traced with marching squares.
@@ -228,9 +229,19 @@ final class ThermalModel: ObservableObject {
         }
         // write back without triggering a sidebar re-render every frame
         _sensorsSilent = current
-        frameStore.frame = computeFrame(current)
+        var f = computeFrame(current)
+        frameSerial += 1
+        f.serial = frameSerial
+        // glide the hotspot marker instead of letting it hop between grid cells; snap on a real jump
+        if smoothHot == nil || hypot(f.hotspot.x - smoothHot!.x, f.hotspot.y - smoothHot!.y) > 25 { smoothHot = f.hotspot }
+        else { smoothHot!.x += (f.hotspot.x - smoothHot!.x) * 0.3; smoothHot!.y += (f.hotspot.y - smoothHot!.y) * 0.3 }
+        f.hotspot = smoothHot!
+        if ThermalModel.renderMode { frameStore.frame = f }
+        else { withAnimation(.easeInOut(duration: 0.24)) { frameStore.frame = f } }
     }
     private var _sensorsSilent: [Sensor] = []
+    private var frameSerial = 0
+    private var smoothHot: CGPoint?
     var liveSensors: [Sensor] { _sensorsSilent.isEmpty ? sensors : _sensorsSilent }
 
     private func layoutDie() {
@@ -253,6 +264,26 @@ final class ThermalModel: ObservableObject {
     func dieSlot(_ id: String) -> CGPoint? { dieSlots[id] }
 
 
+    /// Every in-field sensor pinned at the spot it measures, plus the die held at the mean of its sensors.
+    static func buildPins(_ valid: [Sensor]) -> (pins: [HeatSolver.Pin], ambient: Double, corePeak: Double) {
+        var pins: [HeatSolver.Pin] = []
+        // TAOL / TVA0 read air, not a part: they set the ambient instead of pinning a spot
+        for v in valid where v.placement?.inField == true && v.key != "TAOL" && v.key != "TVA0" {
+            pins.append(HeatSolver.Pin(at: v.placement!.point, radius: 1.5, t: v.value, key: v.key))
+        }
+        let dieVals = valid.filter { $0.placement?.die != nil && $0.source == "SMC" }.map(\.value)
+        if !dieVals.isEmpty {
+            // the M3 die (~11 x 12 mm) is held at the mean of its 80 sensors
+            pins.append(HeatSolver.Pin(at: Board.dieCenter, radius: 5.5, t: dieVals.reduce(0, +) / Double(dieVals.count), key: "die"))
+        }
+        let fieldVals = pins.map(\.t).sorted()
+        let ambient: Double
+        if let a = valid.first(where: { $0.key == "TAOL" })?.value { ambient = Swift.min(a, (fieldVals.first ?? a) - 0.5) }
+        else { ambient = (fieldVals.first ?? 25) - 2 }
+        return (pins, ambient, dieVals.max() ?? .nan)
+    }
+    private var lastSolve: Double?
+
     private func computeFrame(_ s: [Sensor]) -> Frame {
         var f = Frame()
         let gw = Int(Board.width.rounded()), gh = Int(Board.depth)
@@ -260,24 +291,12 @@ final class ThermalModel: ObservableObject {
         let valid = s.filter { $0.valid && !$0.value.isNaN }
         guard !valid.isEmpty else { return f }
 
-        // pin every in-field sensor at the spot it measures; the solver works out the rest
-        var pins: [HeatSolver.Pin] = []
-        // TAOL / TVA0 read air, not a part: they set the ambient instead of pinning a spot
-        for v in valid where v.placement?.inField == true && v.key != "TAOL" && v.key != "TVA0" {
-            pins.append(HeatSolver.Pin(at: v.placement!.point, radius: 1.5, t: v.value))
-        }
-        let dieVals = valid.filter { $0.placement?.die != nil && $0.source == "SMC" }.map(\.value)
-        if !dieVals.isEmpty {
-            // the M3 die (~11 x 12 mm) is held at the mean of its 80 sensors
-            pins.append(HeatSolver.Pin(at: Board.dieCenter, radius: 5.5, t: dieVals.reduce(0, +) / Double(dieVals.count)))
-        }
-        f.corePeak = dieVals.max() ?? .nan
-        let fieldVals = pins.map(\.t).sorted()
-        let ambient: Double
-        if let a = valid.first(where: { $0.key == "TAOL" })?.value { ambient = Swift.min(a, (fieldVals.first ?? a) - 0.5) }
-        else { ambient = (fieldVals.first ?? 25) - 2 }
+        let (pins, ambient, corePeak) = ThermalModel.buildPins(valid)
+        f.corePeak = corePeak
         f.ambient = ambient
-        solver.solve(pins: pins, ambient: ambient)
+        let now = CFAbsoluteTimeGetCurrent()
+        solver.solve(pins: pins, ambient: ambient, dt: lastSolve.map { now - $0 })
+        lastSolve = now
         let grid = solver.resample(caseLayer: mode == .surface, gw: gw, gh: gh)
         let n = gw * gh
         var hi: Float = -999, lo: Float = 999, hiIdx = 0

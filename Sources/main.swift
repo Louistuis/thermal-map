@@ -43,6 +43,10 @@ if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--render=") }) {
         }
     }
     app.run()
+} else if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--snapshot=") }) {
+    Calibrate.snapshot(to: String(arg.dropFirst("--snapshot=".count)))
+} else if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--fit=") }) {
+    Calibrate.fit(arg.dropFirst("--fit=".count).split(separator: ",").map(String.init))
 } else {
     ThermalMapApp.main()
 }
