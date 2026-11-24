@@ -43,6 +43,8 @@ if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--render=") }) {
         }
     }
     app.run()
+} else if CommandLine.arguments.contains(where: { $0.hasPrefix("--record=") }) {
+    Recorder.run(CommandLine.arguments)
 } else {
     ThermalMapApp.main()
 }

@@ -1,0 +1,6 @@
+# start|end|position|kicker|text   (seconds on the footage timeline, after the speed-up)
+0.3|4.0|top|Live · 205 sensors|Every temperature sensor in the Mac
+4.5|10.5|top|Heat-conduction model|Sensors pinned, heat solved in between
+11.9|16.4|top|Bottom case|The outer shell, what an IR camera would see
+17.0|20.5|top|Load off|Cooling down through the heat sink
+21.2|24.6|top|Top view|Same board, seen from the keyboard side
