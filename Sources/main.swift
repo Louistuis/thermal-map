@@ -47,6 +47,8 @@ if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--render=") }) {
     Recorder.run(CommandLine.arguments)
 } else if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--snapshot=") }) {
     Calibrate.snapshot(to: String(arg.dropFirst("--snapshot=".count)))
+} else if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--score=") }) {
+    Calibrate.scoreOnly(arg.dropFirst("--score=".count).split(separator: ",").map(String.init))
 } else if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--fit=") }) {
     Calibrate.fit(arg.dropFirst("--fit=".count).split(separator: ",").map(String.init))
 } else {
