@@ -1,0 +1,17 @@
+{
+  "name": "thermal-map-film",
+  "private": true,
+  "type": "module",
+  "description": "Thermal Map demo film. Needs remotion 4.0.539, @remotion/cli, react 19 (npm install, or symlink node_modules from a project that has them).",
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "wide": "remotion render src/index.ts Wide out/wide.mp4",
+    "tall": "remotion render src/index.ts Tall out/tall.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.539",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.539"
+  }
+}

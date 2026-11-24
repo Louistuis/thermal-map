@@ -1,0 +1,19 @@
+{
+  "voice": {
+    "name": "Eric",
+    "id": "cjVigY5qzO86Huf0OWal",
+    "model": "eleven_multilingual_v2",
+    "stability": 0.62,
+    "similarityBoost": 0.8,
+    "style": 0.05
+  },
+  "script": [
+    "Inside a MacBook Air, two hundred and five sensors are quietly measuring heat.",
+    "Thermal Map reads every one of them. Live.",
+    "Each reading sits on the part it measures. The chip. The heat sink. The battery.",
+    "And a model of how heat moves fills in the space between.",
+    "Put it under load, and watch the heat rise from the M3, and spread.",
+    "Or look at the outside, the way a thermal camera would.",
+    "Thermal Map. Free, and open source."
+  ]
+}

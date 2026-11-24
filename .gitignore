@@ -4,3 +4,8 @@ probe/hid
 *.zip
 .DS_Store
 .claude/
+film/node_modules
+film/out/
+film/public/clips/
+POSTS.md
+media/

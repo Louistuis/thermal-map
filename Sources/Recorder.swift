@@ -5,11 +5,11 @@ import UniformTypeIdentifiers
 
 /// Headless frame recorder for demo videos. Never puts a window on screen.
 ///
-///     ThermalMap --record=/path/frames --seconds=150 --fps=2 [--size=1536x864] [--scale=1.25]
+///     ThermalMap --record=/path/frames --seconds=150 --fps=2 [--size=1536x864] [--scale=1.25] [--format=png|jpg]
 ///                [--at=60:surface] [--at=110:top] [--at=130:internal] [--at=140:bottom] [--at=20:rainbow]
 ///
-/// Writes frame_00000.png ... with live sensor data, plus frames.txt (index, seconds, mode, side, corePeak, fieldMax).
-/// `--at=SEC:ACTION` switches the view at that time: surface, internal, top, bottom, labels, nolabels,
+/// Writes frame_00000.png (or .jpg) ... with live sensor data, plus frames.txt (index, seconds, mode, side, corePeak, fieldMax).
+/// `--at=SEC:ACTION` switches the view at that time: surface, internal, top, bottom, fixed, auto (colour range), labels, nolabels,
 /// or a palette name (ironbow, rainbow, arctic, whitehot).
 enum Recorder {
     static func run(_ args: [String]) {
@@ -19,6 +19,7 @@ enum Recorder {
         let fps = Double(val("--fps=") ?? "2") ?? 2
         let size = (val("--size=") ?? "1536x864").split(separator: "x").compactMap { Double($0) }
         let scale = Double(val("--scale=") ?? "1.25") ?? 1.25
+        let jpeg = (val("--format=") ?? "png").lowercased().hasPrefix("j")
         let schedule: [(Double, String)] = args.filter { $0.hasPrefix("--at=") }.compactMap {
             let p = $0.dropFirst(5).split(separator: ":", maxSplits: 1)
             guard p.count == 2, let t = Double(p[0]) else { return nil }
@@ -58,11 +59,13 @@ enum Recorder {
                 let f = model.frame
                 log += String(format: "%d\t%.2f\t%@\t%@\t%.1f\t%.1f\n", index, t, model.mode.rawValue, model.side.rawValue, f.corePeak, f.hotValue)
                 if let cg = r.cgImage {
-                    let url = dir.appendingPathComponent(String(format: "frame_%05d.png", index))
+                    let url = dir.appendingPathComponent(String(format: "frame_%05d.%@", index, jpeg ? "jpg" : "png"))
                     group.enter()
                     writer.async {
-                        if let d = CGImageDestinationCreateWithURL(url as CFURL, UTType.png.identifier as CFString, 1, nil) {
-                            CGImageDestinationAddImage(d, cg, nil); CGImageDestinationFinalize(d)
+                        let type = (jpeg ? UTType.jpeg : UTType.png).identifier as CFString
+                        if let d = CGImageDestinationCreateWithURL(url as CFURL, type, 1, nil) {
+                            let props = [kCGImageDestinationLossyCompressionQuality: 0.93] as CFDictionary
+                            CGImageDestinationAddImage(d, cg, jpeg ? props : nil); CGImageDestinationFinalize(d)
                         }
                         group.leave()
                     }
@@ -84,6 +87,8 @@ enum Recorder {
         case "internal": m.mode = .internalMode
         case "top": m.side = .top
         case "bottom": m.side = .bottom
+        case "fixed": m.autoRange = false
+        case "auto": m.autoRange = true
         case "labels": m.showLabels = true
         case "nolabels": m.showLabels = false
         default:

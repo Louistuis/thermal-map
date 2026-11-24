@@ -1,32 +1,30 @@
 # Thermal Map
 
-A live, thermal-camera style map of every temperature sensor inside a MacBook Air 13" (M3). Thermal Map reads all 205 SMC and HID temperature sensors once a second, pins each reading to the part it measures on a layout calibrated to Apple's repair manual, and solves the heat flow in between, so you can watch heat move from the M3 across the heat sink, the logic board and the battery in real time.
+Thermal Map shows the heat inside a MacBook Air the way a thermal camera would. It reads all 205 temperature sensors in the 13-inch MacBook Air with M3, places each reading on the part it measures, and solves how heat flows between them. The result is a live, smooth picture of the M3, the heat sink, the logic board and the battery, updated five times a second.
 
-<!-- SCREENSHOT SLOT: docs/screenshot-internal.png (INTERNAL view, bottom side, ironbow) -->
 ![Thermal Map, internal view](docs/screenshot-internal.png)
 
-<!-- VIDEO SLOT: link the demo MP4 attached to the latest release, or a GIF in docs/ -->
+The demo video is attached to the [latest release](https://github.com/Louistuis/thermal-map/releases/latest).
 
 ## Features
 
-- **Every sensor.** All 167 SMC temperature keys (die, heat sink, PMU, regulators, NAND, battery, palm rests, Wi-Fi, display) plus 38 HID thermal services (PMU and PMU2 die sensors, NAND, battery gas gauge). Keys that never return a valid value are detected and skipped.
-- **Heat-conduction model, not a blur.** A two-layer steady-state heat equation on a 2 mm grid. Each part has its own conductivity (aluminium heat sink, logic board, battery cells, trackpad), sensors are fixed at the spots they measure, and the solver fills in the rest. Heat runs along the heat sink and board instead of spreading in round blobs.
-- **Bottom case view.** A second modelled layer for the outer aluminium shell, coupled to the internals and cooled by room air: roughly what an IR camera pointed at the underside would see.
-- **Bottom and top views.** Look at the board from underneath (as with a thermal camera on the bottom case) or from the keyboard side.
-- **Vector isotherms** traced with marching squares, with labelled major levels.
-- **SoC die inset** showing the 80 on-die sensors across the P-cluster, E-cluster and GPU, with the core peak.
-- **Palettes:** Ironbow, Rainbow HC, Arctic, White Hot. Auto range or fixed range.
-- **Sensor table** with live, min and max for every key, filterable, and hover to highlight a sensor on the map.
-- **Light on the Mac it measures:** about 7% of one core with the window open, about 5% when hidden (the map pauses when no window is visible).
+- **Every sensor.** All 167 SMC temperature keys (CPU and GPU cores, heat sink, power management, regulators, storage, battery, palm rests, Wi-Fi, display) and 38 HID thermal services (PMU and PMU2 die sensors, NAND, battery gas gauge). Keys that never return a usable value are detected and skipped.
+- **A heat model, not a blur.** A two-layer heat-conduction model on a 2 mm grid. Each part has its own conductivity: the aluminium heat sink spreads heat well, the logic board less so, the battery and trackpad poorly. Sensors are fixed at the spots they measure and the model fills in the rest, so heat runs along the heat sink and the board instead of spreading in round blobs.
+- **Bottom case.** A second modelled layer for the outer aluminium shell. It is coupled to the internals, cooled by room air, and has thermal mass, so it warms and cools more slowly than the parts inside. It is roughly what an IR camera on the underside would see.
+- **Bottom and top views.** See the board from underneath, like a thermal camera pointed at the bottom case, or from the keyboard side.
+- **Isotherms** traced as smooth vector contours, with labelled levels.
+- **M3 die inset** with all 80 on-die sensors across the performance cores, efficiency cores, GPU and Neural Engine.
+- **Four palettes,** auto or fixed range.
+- **Sensor list** with live, minimum and maximum values for every key. Hover a sensor to find it on the map.
+- **Light on the Mac it measures.** About 7% of one CPU core with the window open, about 5% when it is hidden. The map pauses when no window is visible.
 
-<!-- SCREENSHOT SLOT: docs/screenshot-bottom-case.png (BOTTOM CASE view under load) -->
 ![Thermal Map, bottom case view](docs/screenshot-bottom-case.png)
 
 ## Download
 
 1. Download **Thermal-Map.zip** from the [latest release](https://github.com/Louistuis/thermal-map/releases/latest).
-2. Unzip it and move **Thermal Map.app** to your Applications folder.
-3. The app is ad-hoc signed, not notarized (no paid Apple Developer ID), so the first launch is blocked by Gatekeeper. Either right-click the app, choose **Open**, then **Open** again, or run:
+2. Unzip it and move **Thermal Map** to your Applications folder.
+3. The app is signed ad hoc and not notarized, because it is not published with a paid Apple Developer ID. The first time, macOS will refuse to open it. Right-click the app, choose **Open**, then choose **Open** again. Or run this once in Terminal:
 
    ```bash
    xattr -dr com.apple.quarantine "/Applications/Thermal Map.app"
@@ -34,19 +32,17 @@ A live, thermal-camera style map of every temperature sensor inside a MacBook Ai
 
 **Requirements**
 
-- macOS 14 Sonoma or later, Apple silicon.
-- The layout is built and calibrated for the **MacBook Air 13-inch M3 (Mac15,12)** only. On any other Mac the app still reads every sensor and the table is correct, but the map will show the wrong board. Layouts for other models are welcome as pull requests (see `Sources/Layout.swift`).
-- No admin rights, no kernel extension, no helper tool. It only reads sensors.
+- macOS 14 Sonoma or later on Apple silicon.
+- The map is built and calibrated for the **13-inch MacBook Air with M3 (Mac15,12)**. On any other Mac the app still reads every sensor and the list is correct, but the map shows this model's board. Layouts for other Macs are the most wanted contribution (see Contributing).
+- No admin rights, kernel extensions or helper tools. Thermal Map only reads sensors.
 
 ## Setup: build from source
 
-You need the Xcode Command Line Tools (full Xcode is not required):
+You only need the Xcode Command Line Tools. Full Xcode is not required.
 
 ```bash
 xcode-select --install
 ```
-
-Then:
 
 ```bash
 git clone https://github.com/Louistuis/thermal-map.git
@@ -54,54 +50,85 @@ cd thermal-map
 ./build.sh
 ```
 
-`build.sh` compiles `Sources/*.swift` with `swiftc`, generates the app icon, writes the `Info.plist`, ad-hoc signs the bundle and installs it to `/Applications`. To install somewhere else, set `DEST`:
+`build.sh` compiles `Sources/*.swift` with `swiftc`, makes the app icon, writes `Info.plist`, signs the app ad hoc and installs it in `/Applications`. To install it somewhere else, set `DEST`:
 
 ```bash
 DEST="$HOME/Applications" ./build.sh
 ```
 
-The built bundle is also left at `build/Thermal Map.app`.
+The built app is also left in `build/Thermal Map.app`.
 
-### Headless rendering
+### Headless tools
 
-The binary can render without opening a window, which is how the screenshots and the demo video are made:
+The same binary has a few modes that never open a window:
 
 ```bash
-# one PNG after a few seconds of live data
-"/Applications/Thermal Map.app/Contents/MacOS/ThermalMap" --render=out.png [--top] [--surface] [--labels]
+BIN="/Applications/Thermal Map.app/Contents/MacOS/ThermalMap"
 
-# a PNG frame sequence of live data, with timed view switches
-"/Applications/Thermal Map.app/Contents/MacOS/ThermalMap" --record=frames --seconds=60 --fps=2 --at=30:surface
+"$BIN" --render=out.png [--top] [--surface]          # one image after a few seconds of live data
+"$BIN" --record=frames --seconds=60 --fps=2 \
+       --at=30:surface [--format=jpg]                # a frame sequence of live data, with timed view changes
+"$BIN" --snapshot=idle.json                          # save one set of live readings for the accuracy test
+"$BIN" --score=idle.json,load.json                   # held-out sensor test with the current model
+"$BIN" --fit=idle.json,load.json,cooling.json        # the same test, then fit the model's constants
 ```
 
-`Tools/demo/record-demo.sh` records a run under a short all-core load, and `Tools/demo/make-demo.sh` turns the frames into the 16:9 and 4:5 demo videos (needs `ffmpeg`).
+The demo video is made from this live footage: `Tools/demo/record-demo.sh` records a take under a short all-core load, `Tools/demo/film-clips.sh` cuts it into clips, `film/` edits them in Remotion with the narration, and `Tools/demo/loudnorm.sh` finishes the audio.
+
+## Accuracy
+
+The model is checked with a held-out sensor test. A group of passive sensors (heat sink, battery, gas gauge and palm rests) is hidden from the model, the model predicts the temperature at their spots, and the prediction is compared with what they actually read. Parts that make their own heat, like chips and regulators, are always given to the model and never scored, because no conduction model can predict them.
+
+On three snapshots from this Mac (idle, 70 seconds of full load, and cooling down), fitting the model's constants and placing the heat-sink sensors where their readings fit best brought the error down:
+
+| | Before | After |
+|---|---|---|
+| RMS error | 5.8 °C | 2.0 °C |
+| Mean absolute error | 4.7 °C | 1.7 °C |
+
+The snapshots are in `calib/`, and `--score` and `--fit` reproduce the numbers.
+
+What is still inferred:
+
+- Apple does not publish sensor coordinates. A sensor's key tells you which part it measures, but its exact spot on that part is inferred. The six heat-sink sensors are placed where their readings fit the model best (15 to 27 mm from the die), not from Apple documentation.
+- The die inset places the on-die sensors on an even grid inside each block, not at their real positions on the silicon.
+- A few key meanings are educated guesses, for example `TAOL`, `TVA0` and the `Tp` triples.
+- The bottom case has thermal mass, so it lags behind the parts inside. Its constants are estimated, not measured with an IR camera, so treat the bottom case view as a model, not a measurement.
 
 ## How it works
 
-- **SMC.** Talks to the `AppleSMC` user client directly (`IOConnectCallStructMethod`, the same interface tools like iStat use), enumerates all keys, keeps every `T*` key with a temperature type (`flt`, `sp78`, `fp88`, `ioft`) and reads them on a background queue.
-- **HID.** Reads the thermal services exposed through the private `IOHIDEventSystemClient` API (usage page `0xff00`, usage 5). This is a private API, which is fine for an app distributed outside the Mac App Store.
-- **Layout.** Part outlines (logic board, heat sink, M3, NAND, PMUs, regulators, battery cells, trackpad, speakers, ports) are calibrated to Apple's Self Service Repair manual for this exact model (J613), mirrored where needed, within roughly 3 to 5 mm. Each sensor is placed on the part it measures, using its key name and zone.
-- **Solver.** Red-black successive over-relaxation on a 153 x 108 grid with two coupled layers (internals and bottom case). Sensors are Dirichlet pins, the room-air sensor sets the ambient, and each frame warm-starts from the previous solution, so only a few sweeps are needed at 5 frames per second. The result is resampled to a 1 mm grid, colorized and contoured.
+- **SMC.** Thermal Map talks to the `AppleSMC` user client directly (`IOConnectCallStructMethod`), lists every key, keeps the `T*` keys with a temperature type (`flt`, `sp78`, `fp88`, `ioft`), and reads them once a second on a background queue.
+- **HID.** It also reads the thermal services exposed through the private `IOHIDEventSystemClient` API. Private APIs are fine for an app distributed outside the Mac App Store.
+- **Layout.** The outlines of the logic board, heat sink, M3, storage, power chips, regulators, battery cells, trackpad, speakers and ports are calibrated to Apple's Self Service Repair manual for this model (J613), to within roughly 3 to 5 mm.
+- **Model.** Red-black successive over-relaxation on a 153 by 108 grid with two coupled layers, the internals and the bottom case. Sensors are fixed values, the room air sensor sets the ambient temperature, and every frame starts from the previous solution, so a few sweeps are enough at five frames per second. The result is resampled to a 1 mm grid, coloured and contoured.
 
-### Honest limits
+## Contributing
 
-- Apple does not publish sensor coordinates. Which part a sensor measures is known from its key name; its exact spot within that part is inferred.
-- The die inset places the on-die sensors on an even grid inside each cluster, not at their real silicon positions.
-- Some key meanings are educated guesses (for example `TAOL`, `TVA0` and the `Tp` triples).
-- The conductivities and the bottom-case coupling are tuned to plausible values (about 33 °C over the chip at idle), not measured with an IR camera. Treat the bottom case view as a model, not a measurement.
+If you have a Mac, any Mac, you are welcome to build on this project. Open an issue or a pull request.
+
+The most wanted work is support for other Mac models. Each one needs:
+
+1. A board map in `Sources/Layout.swift`: the outlines of the board, heat sink or fans, chips, battery cells and trackpad, in millimetres. Apple's Self Service Repair manuals and teardown photos are good sources.
+2. Sensor placements for that model's keys. Run the app and look at the sensor list to see which keys your Mac has.
+3. A quick accuracy check: save a few snapshots with `--snapshot` (idle, under load, cooling down) and run `--score` and `--fit` on them. Include the numbers in your pull request.
+
+Other ideas: fans and fan speeds on MacBook Pro, a menu bar view, recording and replay, and a calibration against a real IR camera.
 
 ## Project layout
 
 ```
 Sources/Sensors.swift     SMC and HID readers
-Sources/Layout.swift      board geometry and the sensor placement map
-Sources/HeatSolver.swift  two-layer heat-conduction solver
+Sources/Layout.swift      board geometry and sensor placements
+Sources/HeatSolver.swift  two-layer heat-conduction model
+Sources/Calibrate.swift   snapshots, held-out accuracy test and constant fitting
 Sources/Model.swift       sampling, smoothing, field, isotherms, palettes
 Sources/Views.swift       SwiftUI interface
 Sources/Recorder.swift    headless frame recorder
-Sources/main.swift        app entry, --render and --record
-Tools/                    icon generator, layout calibration notes, demo video scripts
-probe/                    the original sensor dumps from this Mac
+Sources/main.swift        app entry and headless modes
+calib/                    snapshots used for the accuracy numbers
+Tools/                    icon, layout calibration notes, demo video scripts
+film/                     the demo video (Remotion)
+probe/                    the first sensor dumps from this Mac
 ```
 
 ## License
