@@ -170,7 +170,26 @@ final class ThermalModel: ObservableObject {
         layoutDie()
     }
 
+    /// THERMALMAP_PERFLOG=1: every 10 s append "time visible cpu%" to ~/Library/Logs/ThermalMap-perf.log.
+    private var perfLast: (wall: Double, cpu: Double)?
+    private func perfTick() {
+        var ru = rusage(); getrusage(RUSAGE_SELF, &ru)
+        let cpu = Double(ru.ru_utime.tv_sec + ru.ru_stime.tv_sec) + Double(ru.ru_utime.tv_usec + ru.ru_stime.tv_usec) / 1e6
+        let wall = CFAbsoluteTimeGetCurrent()
+        if let l = perfLast {
+            let line = String(format: "%@ visible=%d cpu=%.1f%%\n", ISO8601DateFormatter().string(from: Date()), windowVisible ? 1 : 0, (cpu - l.cpu) / (wall - l.wall) * 100)
+            let url = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Logs/ThermalMap-perf.log")
+            if let h = try? FileHandle(forWritingTo: url) { h.seekToEndOfFile(); h.write(line.data(using: .utf8)!); try? h.close() }
+            else { try? line.write(to: url, atomically: true, encoding: .utf8) }
+        }
+        perfLast = (wall, cpu)
+    }
+
     func start() {
+        if ProcessInfo.processInfo.environment["THERMALMAP_PERFLOG"] == "1" {
+            let t = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in self?.perfTick() }
+            RunLoop.main.add(t, forMode: .common)
+        }
         sample()
         sampleTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in self?.sample() }
         frameTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 5.0, repeats: true) { [weak self] _ in self?.tickFrame() }
@@ -198,46 +217,70 @@ final class ThermalModel: ObservableObject {
         }
     }
 
+    /// A window is on screen (or a headless/test mode wants updates regardless).
+    var windowVisible: Bool {
+        ThermalModel.renderMode || ThermalModel.alwaysRender
+            || NSApp.windows.contains(where: { $0.isVisible && $0.occlusionState.contains(.visible) })
+    }
+
+    /// Latest readings, always current; `sensors` / `history` (published, drive the sidebar) are only pushed
+    /// while a window is visible, so a hidden app does no SwiftUI work at all.
+    private var store: [Sensor] = []
+    private var historyStore: [HistoryPoint] = []
+
     private func apply(_ values: [String: Double], readIDs: Set<String>, ms: Double) {
         lastSampleMs = ms
         sampleCount += 1
-        for i in sensors.indices {
-            let id = sensors[i].id
+        if store.count != sensors.count { store = sensors }
+        var list = store
+        for i in list.indices {
+            let id = list[i].id
             guard readIDs.contains(id) else { continue }   // skipped dead key: keep its last state
             let v = values[id]
             if v.map({ $0 > 5 && $0 < 130 }) ?? false { deadStreak[id] = 0 } else { deadStreak[id, default: 0] += 1 }
-            sensors[i].raw = v
-            if sensors[i].valid, let v {
-                if i < _sensorsSilent.count, !_sensorsSilent[i].value.isNaN { sensors[i].value = _sensorsSilent[i].value }
-                else { sensors[i].value = v }
-                sensors[i].min = Swift.min(sensors[i].min, v)
-                sensors[i].max = Swift.max(sensors[i].max, v)
+            list[i].raw = v
+            if list[i].valid, let v {
+                if i < _sensorsSilent.count, !_sensorsSilent[i].value.isNaN { list[i].value = _sensorsSilent[i].value }
+                else { list[i].value = v }
+                list[i].min = Swift.min(list[i].min, v)
+                list[i].max = Swift.max(list[i].max, v)
             }
         }
+        store = list
         func avg(_ f: (Sensor) -> Bool) -> Double {
-            let v = sensors.filter { $0.valid && f($0) }.compactMap(\.raw)
+            let v = list.filter { $0.valid && f($0) }.compactMap(\.raw)
             return v.isEmpty ? .nan : v.reduce(0, +) / Double(v.count)
         }
-        let soc = sensors.filter { $0.valid && $0.placement?.die != nil }.compactMap(\.raw).max() ?? .nan
-        history.append(HistoryPoint(soc: soc,
-                                    pmu: avg { $0.source == "SMC" && $0.key.hasPrefix("TPD") },
-                                    battery: avg { $0.source == "SMC" && $0.zone.hasPrefix("Battery") },
-                                    palm: avg { $0.key == "Ts0P" || $0.key == "Ts1P" }))
-        if history.count > 120 { history.removeFirst(history.count - 120) }
+        let soc = list.filter { $0.valid && $0.placement?.die != nil }.compactMap(\.raw).max() ?? .nan
+        historyStore.append(HistoryPoint(soc: soc,
+                                         pmu: avg { $0.source == "SMC" && $0.key.hasPrefix("TPD") },
+                                         battery: avg { $0.source == "SMC" && $0.zone.hasPrefix("Battery") },
+                                         palm: avg { $0.key == "Ts0P" || $0.key == "Ts1P" }))
+        if historyStore.count > 120 { historyStore.removeFirst(historyStore.count - 120) }
+        if windowVisible { publish() } else { unpublished = true }
+    }
+
+    private var unpublished = false
+    private func publish() {
+        unpublished = false
+        sensors = store          // one assignment: one SwiftUI update per sample
+        history = historyStore
     }
 
     // MARK: per-frame smoothing + field
 
     private func tickFrame() {
         // no visible window (minimised, hidden, fully covered): skip the field work entirely
-        if !ThermalModel.renderMode && !ThermalModel.alwaysRender && !NSApp.windows.contains(where: { $0.isVisible && $0.occlusionState.contains(.visible) }) { return }
+        if !windowVisible { return }
         // exponential approach toward the latest raw sample gives smooth, continuous motion between 2 Hz samples
-        if _sensorsSilent.count != sensors.count { _sensorsSilent = sensors }
+        if store.count != sensors.count { store = sensors }
+        if unpublished { publish() }   // window came back: catch the sidebar up
+        if _sensorsSilent.count != store.count { _sensorsSilent = store }
         var current = _sensorsSilent
         for i in current.indices {
-            current[i].raw = sensors[i].raw
-            current[i].min = sensors[i].min
-            current[i].max = sensors[i].max
+            current[i].raw = store[i].raw
+            current[i].min = store[i].min
+            current[i].max = store[i].max
             if current[i].valid && current[i].value.isNaN { current[i].value = current[i].raw! }
         }
         for i in current.indices where current[i].valid {

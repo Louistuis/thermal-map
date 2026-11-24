@@ -85,8 +85,8 @@ On three snapshots from this Mac (idle, 70 seconds of full load, and cooling dow
 
 | | Before | After |
 |---|---|---|
-| RMS error | 5.8 °C | 2.0 °C |
-| Mean absolute error | 4.7 °C | 1.7 °C |
+| RMS error | 5.8 °C | 1.8 °C |
+| Mean absolute error | 4.7 °C | 1.5 °C |
 
 The snapshots are in `calib/`, and `--score` and `--fit` reproduce the numbers.
 
@@ -103,6 +103,18 @@ What is still inferred:
 - **HID.** It also reads the thermal services exposed through the private `IOHIDEventSystemClient` API. Private APIs are fine for an app distributed outside the Mac App Store.
 - **Layout.** The outlines of the logic board, heat sink, M3, storage, power chips, regulators, battery cells, trackpad, speakers and ports are calibrated to Apple's Self Service Repair manual for this model (J613), to within roughly 3 to 5 mm.
 - **Model.** Red-black successive over-relaxation on a 153 by 108 grid with two coupled layers, the internals and the bottom case. Sensors are fixed values, the room air sensor sets the ambient temperature, and every frame starts from the previous solution, so a few sweeps are enough at five frames per second. The result is resampled to a 1 mm grid, coloured and contoured.
+
+## Testing
+
+Everything runs headless, so no test window ever appears on screen:
+
+```bash
+BIN=build/ThermalMap
+$BIN --selftest                                   # sensors, layout, solver, field, isolines, palettes
+Tools/test/render-matrix.sh $BIN /tmp/tm-renders   # every view and toggle combination
+python3 Tools/test/check_renders.py /tmp/tm-renders  # alignment, blank map, broken controls
+$BIN --score=calib/idle.json,calib/load.json,calib/cooling.json   # held-out accuracy
+```
 
 ## Contributing
 

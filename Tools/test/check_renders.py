@@ -24,8 +24,11 @@ for line in open(os.path.join(out, "index.txt")):
         def at(x, y): return px[int(x * sc), int(y * sc)]
         inside = [(ox + 8, oy + bh / 2), (ox + bw - 8, oy + bh / 2), (ox + bw / 2, oy + bh - 8), (ox + 30, oy + bh - 30), (ox + bw - 30, oy + 30)]
         outside = [(ox - 6, oy + bh / 2), (ox + bw + 6, oy + bh / 2)]
+        def mostly_field(x, y):   # a 7x7 pt patch, so a contour line or sensor dot under the point doesn't count
+            pts = [at(x + dx, y + dy) for dx in range(-3, 4, 2) for dy in range(-3, 4, 2)]
+            return sum(sat(q) >= 0.5 for q in pts) >= len(pts) * 0.6
         for p in inside:
-            if sat(at(*p)) < 0.5: problems.append(f"no field at {tuple(int(v) for v in p)} {at(*p)}")
+            if not mostly_field(*p): problems.append(f"no field at {tuple(int(v) for v in p)} {at(*p)}")
         for p in outside:
             if sat(at(*p)) > 0.35: problems.append(f"field outside chassis at {tuple(int(v) for v in p)} {at(*p)}")
     # blank check on the map area

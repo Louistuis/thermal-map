@@ -203,7 +203,11 @@ struct ToggleChip: View {
     }
 }
 
+/// One soft pulse per sensor sample. (An endless repeatForever animation kept the whole window
+/// redrawing at 60 fps.)
 struct LiveDot: View {
+    @ObservedObject var fs: FrameStore
+    private var beat: Int { fs.frame.serial / 5 }
     @State private var pulse = false
     var body: some View {
         ZStack {
@@ -212,9 +216,11 @@ struct LiveDot: View {
             Circle().fill(UI.live).frame(width: 6, height: 6)
         }
         .frame(width: 12, height: 12)
-        .onAppear {
-            guard !ThermalModel.renderMode else { return }
-            withAnimation(.easeOut(duration: 1.6).repeatForever(autoreverses: false)) { pulse = true }
+        .onChange(of: beat) {
+            guard !ThermalModel.renderMode, ProcessInfo.processInfo.environment["TM_NODOT"] == nil else { return }
+            var t = Transaction(); t.disablesAnimations = true
+            withTransaction(t) { pulse = false }
+            DispatchQueue.main.async { withAnimation(.easeOut(duration: 0.9)) { pulse = true } }
         }
     }
 }
@@ -269,7 +275,7 @@ struct Header: View {
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 7) {
                     Text("Thermal Map").font(UI.text(15, .semibold))
-                    LiveDot()
+                    LiveDot(fs: m.frameStore)
                 }
                 Text("Made for the \(MacModel.active.name)  ·  \(m.side == .bottom ? "seen from below, like an IR camera" : "seen from above, through the keyboard")")
                     .font(UI.text(11.5)).foregroundStyle(UI.secondary)
@@ -301,18 +307,13 @@ struct ChassisView: View {
             let w = Board.width * s, h = Board.depth * s
             let ox = (geo.size.width - w) / 2, oy = (geo.size.height - h) / 2
             let map = Mapper(s: s, ox: ox, oy: oy, mirror: m.side == .bottom)
-            let shape = RoundedRectangle(cornerRadius: Board.corner * s, style: .continuous)
-
             ZStack(alignment: .topLeading) {
-                Canvas { ctx, size in drawBackdrop(ctx, size, map) }
-                // soft contact shadow under the machine
-                shape.fill(Color.black.opacity(0.55))
-                    .frame(width: w, height: h)
-                    .blur(radius: 22).offset(x: ox, y: oy + 14)
+                Backdrop(map: map).equatable()
                 // the field crossfades between updates, so 5 Hz data reads as continuous motion
+                // clipped inside FieldLayer (image clipShape, canvas clip): a .mask here forced the whole map area
+                // to render offscreen on every frame
                 CrossfadeField(frame: fs.frame, map: map, isotherms: m.showIsotherms)
                 .frame(width: geo.size.width, height: geo.size.height)
-                .mask(shape.frame(width: w, height: h).offset(x: ox, y: oy).frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading))
                 Canvas { ctx, size in drawOverlay(ctx, size, map) }
             }
             .contentShape(Rectangle())
@@ -322,7 +323,7 @@ struct ChassisView: View {
         }
     }
 
-    struct Mapper {
+    struct Mapper: Equatable {
         let s: CGFloat, ox: CGFloat, oy: CGFloat, mirror: Bool
         func pt(_ p: CGPoint) -> CGPoint { CGPoint(x: ox + (mirror ? Board.width - p.x : p.x) * s, y: oy + p.y * s) }
         func rect(_ r: CGRect) -> CGRect {
@@ -348,19 +349,36 @@ struct ChassisView: View {
             ZStack(alignment: .topLeading) {
                 FieldLayer(frame: frame, map: map, isotherms: isotherms)
                 if let prev, fade > 0.001 {
-                    FieldLayer(frame: prev, map: map, isotherms: isotherms).opacity(fade)
+                    FieldLayer(frame: prev, map: map, isotherms: false).opacity(fade)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .onAppear { last = frame }
             .onChange(of: frame.serial) {
-                guard !ThermalModel.renderMode else { last = frame; return }
+                guard !ThermalModel.renderMode, ProcessInfo.processInfo.environment["TM_NOFADE"] == nil else { last = frame; return }
                 prev = last
                 last = frame
                 var t = Transaction(); t.disablesAnimations = true
                 withTransaction(t) { fade = 1 }
                 // start the fade on the next runloop pass, after the opaque old frame has been committed
                 DispatchQueue.main.async { withAnimation(.easeOut(duration: 0.22)) { fade = 0 } }
+            }
+        }
+    }
+
+    /// Dot grid, rulers and the contact shadow. Depends only on the geometry, so it is skipped on map updates.
+    struct Backdrop: View, Equatable {
+        let map: Mapper
+        var body: some View {
+            let w = Board.width * map.s, h = Board.depth * map.s
+            ZStack(alignment: .topLeading) {
+                Canvas { ctx, size in ChassisView.drawBackdrop(ctx, size, map) }
+                // drawn once per size into a bitmap: a live .blur this large was re-run on the CPU whenever
+                // anything else in the window animated
+                if let img = ContactShadow.image(w: w, h: h, corner: Board.corner * map.s) {
+                    Image(decorative: img, scale: 2)
+                        .offset(x: map.ox - ContactShadow.pad, y: map.oy + 14 - ContactShadow.pad)
+                }
             }
         }
     }
@@ -376,10 +394,14 @@ struct ChassisView: View {
                     Image(decorative: img, scale: 1)
                         .resizable().interpolation(.high)
                         .frame(width: Board.width * map.s, height: Board.depth * map.s)
+                        .clipShape(RoundedRectangle(cornerRadius: Board.corner * map.s, style: .continuous))
                         .offset(x: map.ox, y: map.oy)
                 }
                 if isotherms {
                     Canvas { ctx, _ in
+                        var ctx = ctx
+                        ctx.clip(to: Path(roundedRect: CGRect(x: map.ox, y: map.oy, width: Board.width * map.s, height: Board.depth * map.s),
+                                          cornerRadius: Board.corner * map.s, style: .continuous))
                         for c in frame.contours {
                             var path = Path(); var i = 0
                             let segs = c.segments
@@ -411,7 +433,7 @@ struct ChassisView: View {
         }
     }
 
-    private func drawBackdrop(_ ctx: GraphicsContext, _ size: CGSize, _ map: Mapper) {
+    static func drawBackdrop(_ ctx: GraphicsContext, _ size: CGSize, _ map: Mapper) {
         // 10 mm dot grid: quieter than lines
         let step = 10 * map.s
         var dots = Path()
@@ -564,6 +586,30 @@ struct ChassisView: View {
         ctx.stroke(shape, with: .color(.white.opacity(0.16)), lineWidth: 0.5)
         ctx.draw(a, at: CGPoint(x: r.minX + 10, y: r.midY), anchor: .leading)
         ctx.draw(b, at: CGPoint(x: r.minX + 16 + sa.width, y: r.midY), anchor: .leading)
+    }
+}
+
+enum ContactShadow {
+    static let pad: CGFloat = 50
+    nonisolated(unsafe) private static var cache: [String: CGImage] = [:]
+    static func image(w: CGFloat, h: CGFloat, corner: CGFloat) -> CGImage? {
+        let key = "\(Int(w))x\(Int(h))"
+        if let c = cache[key] { return c }
+        let sc: CGFloat = 2
+        let W = Int((w + pad * 2) * sc), H = Int((h + pad * 2) * sc)
+        guard W > 0, H > 0, let ctx = CGContext(data: nil, width: W, height: H, bitsPerComponent: 8, bytesPerRow: 0,
+                                                space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
+        ctx.scaleBy(x: sc, y: sc)
+        // the shape sits far outside the bitmap; only its blurred shadow lands inside
+        let shift: CGFloat = 100_000
+        ctx.setShadow(offset: CGSize(width: shift, height: 0), blur: 44, color: CGColor(gray: 0, alpha: 0.55))
+        let r = CGRect(x: pad - shift, y: pad, width: w, height: h)
+        ctx.addPath(CGPath(roundedRect: r, cornerWidth: corner, cornerHeight: corner, transform: nil))
+        ctx.fillPath()
+        let img = ctx.makeImage()
+        if cache.count > 8 { cache.removeAll() }
+        cache[key] = img
+        return img
     }
 }
 
@@ -730,7 +776,7 @@ struct Sidebar: View {
             }
             .padding(.horizontal, 10).frame(height: 30)
             .card(9)
-            VStack(alignment: .leading, spacing: 4) {
+            LazyVStack(alignment: .leading, spacing: 4) {
                 ForEach(Array(groups.enumerated()), id: \.element.0) { gi, g in
                     let open = expanded[g.0] ?? (!q.isEmpty || g.1.count <= 8)
                     if !ThermalModel.renderMode || gi < 4 {
@@ -776,7 +822,11 @@ struct SensorGroup: View {
 
             if open {
                 VStack(spacing: 0) {
-                    ForEach(sensors) { s in SensorRow(m: m, s: s, lo: f.lo, hi: f.hi) }
+                    ForEach(sensors) { s in
+                        SensorRow(s: s, lo: f.lo, hi: f.hi, palette: m.palette, selected: m.highlighted == s.id) {
+                            withAnimation(UI.spring) { m.highlighted = m.highlighted == s.id ? nil : s.id }
+                        }
+                    }
                 }
                 .padding(4)
                 .card(10)
@@ -787,14 +837,15 @@ struct SensorGroup: View {
 }
 
 struct SensorRow: View {
-    @ObservedObject var m: ThermalModel
     let s: Sensor
     let lo: Double, hi: Double
+    let palette: Palette
+    let selected: Bool
+    let tap: () -> Void
     @State private var hover = false
     var body: some View {
-        let selected = m.highlighted == s.id
         HStack(spacing: 8) {
-            Circle().fill(s.valid ? m.palette.color(0.2 + 0.8 * (s.value - lo) / max(hi - lo, 1)) : Color.white.opacity(0.15))
+            Circle().fill(s.valid ? palette.color(0.2 + 0.8 * (s.value - lo) / max(hi - lo, 1)) : Color.white.opacity(0.15))
                 .frame(width: 7, height: 7)
             Text(s.key).font(UI.text(12, .medium).monospacedDigit()).lineLimit(1)
             if s.source == "HID" {
@@ -814,7 +865,7 @@ struct SensorRow: View {
             .fill(selected ? UI.accent.opacity(0.18) : Color.white.opacity(hover ? 0.05 : 0)))
         .contentShape(Rectangle())
         .onHover { hover = $0 }
-        .onTapGesture { withAnimation(UI.spring) { m.highlighted = selected ? nil : s.id } }
+        .onTapGesture(perform: tap)
         .help(s.valid ? "\(s.key) (\(s.type)), min \(UI.fmt(s.min))°, max \(UI.fmt(s.max))°" : "\(s.key) (\(s.type)), raw \(s.raw.map { String($0) } ?? "none")")
     }
 }

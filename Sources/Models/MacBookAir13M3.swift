@@ -20,7 +20,7 @@ extension MacModel {
             gauge: CGPoint(x: 152, y: 73),
             packageRadius: 19)
         var params = HeatSolver.Params()
-        // fitted with --fit on calib/idle.json, load.json, cooling.json: held-out RMS 5.8 -> 2.0 C
+        // fitted with --fit on calib/idle.json, load.json, cooling.json: held-out RMS 5.8 -> 1.8 C
         params.kSink = 113; params.kBoard = 7.56; params.kChip = 11.3; params.kTrackpad = 35.8; params.kBattery = 47.7
         params.gBattery = 0.003; params.gBase = 0.002
         params.gSink = 0.015   // the fit wanted 0.004; 0.015 keeps the bottom case physical (no case sensor to fit)

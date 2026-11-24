@@ -128,7 +128,7 @@ Then:
 - **Placement experiments:** `TM_MOVE="Th08:-10:0,Th09:-10:0" "$APP" --score=$S` shifts those sensors by (dx, dy) mm before scoring. If the error drops a lot, the sensor really sits there. This is how the M3 Air's heat-sink sensors were found 15 to 27 mm from the die, not at the far end of the heat sink as first guessed.
 - **`"$APP" --fit=$S`** fits the internal conductances and losses by coordinate descent, within 4x of the physical defaults, and prints the constants. Copy them into your model's `params`. If a constant ends on that 4x limit, a sensor is probably misplaced; fix that first.
 
-For reference, the M3 Air went from 5.8 to 2.0 °C RMS (4.7 to 1.7 °C mean) on held-out sensors.
+For reference, the M3 Air went from 5.8 to 1.8 °C RMS (4.7 to 1.5 °C mean) on held-out sensors.
 
 The bottom case has no sensor of its own, so it cannot be fitted this way. Keep `gSink`, `gBase`, `hCase` and `kCase` physical unless you can measure the case with an IR camera or a thermocouple, and say so if you do.
 
