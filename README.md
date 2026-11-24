@@ -6,7 +6,7 @@ Thermal Map shows the heat inside a MacBook Air the way a thermal camera would. 
 
 ![Thermal Map, internal view](docs/screenshot-internal.png)
 
-Watch the [demo video](https://github.com/Louistuis/thermal-map/releases/download/v1.0/thermal-map-demo-1080p.mp4) (43 seconds, recorded from live data).
+Watch the [demo video](https://github.com/Louistuis/thermal-map/releases/download/v1.0/thermal-map-demo-1080p.mp4) (38 seconds, narrated, recorded from live data).
 
 ## Features
 
@@ -75,7 +75,7 @@ BIN="/Applications/Thermal Map.app/Contents/MacOS/ThermalMap"
 "$BIN" --fit=idle.json,load.json,cooling.json        # the same test, then fit the model's constants
 ```
 
-The demo video is made from this live footage: `Tools/demo/record-demo.sh` records a take under a short all-core load, `Tools/demo/film-clips.sh` cuts it into clips, `film/` edits them in Remotion with the narration, and `Tools/demo/loudnorm.sh` finishes the audio.
+The demo video is made from this live footage: `Tools/demo/record-demo.sh` records a take under a short all-core load, `Tools/demo/film-clips.sh` cuts it into clips, `film/` edits them in Remotion with the narration and the annotations, `Tools/demo/music.mjs` synthesizes the music, and `Tools/demo/mix.sh` ducks it under the voice and masters the audio.
 
 ## Accuracy
 
