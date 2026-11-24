@@ -75,6 +75,24 @@ enum Calibrate {
         return Score(rms: (se / max(n, 1)).squareRoot(), mae: ae / max(n, 1), worst: worst)
     }
 
+    static func load(_ paths: [String]) -> [Snapshot] {
+        paths.compactMap { p in (try? Data(contentsOf: URL(fileURLWithPath: p))).flatMap { try? JSONDecoder().decode(Snapshot.self, from: $0) } }
+    }
+    /// Score the shipped constants only; ENV TM_MOVE="KEY:dx:dy,..." shifts pins (placement experiments).
+    static func scoreOnly(_ paths: [String]) {
+        var snaps = load(paths)
+        if let mv = ProcessInfo.processInfo.environment["TM_MOVE"] {
+            for spec in mv.split(separator: ",") {
+                let f = spec.split(separator: ":"); guard f.count == 3, let dx = Double(f[1]), let dy = Double(f[2]) else { continue }
+                for si in snaps.indices { for pi in snaps[si].pins.indices where snaps[si].pins[pi].key == f[0] {
+                    snaps[si].pins[pi].at.x += dx; snaps[si].pins[pi].at.y += dy } }
+            }
+        }
+        let sc = score(HeatSolver.fitted, snaps, verbose: ProcessInfo.processInfo.environment["TM_V"] != nil)
+        print(String(format: "rms %.2f  mae %.2f  worst %@ %+.1f", sc.rms, sc.mae, sc.worst.0, sc.worst.1))
+        exit(0)
+    }
+
     static func fit(_ paths: [String]) {
         let snaps = paths.compactMap { p -> Snapshot? in
             guard let d = try? Data(contentsOf: URL(fileURLWithPath: p)) else { print("cannot read \(p)"); return nil }

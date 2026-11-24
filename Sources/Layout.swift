@@ -111,12 +111,13 @@ enum SensorMap {
         "TG2B": ("Battery · right", CGPoint(x: 244, y: 126), 40),
         "TG0C": ("Gas gauge", CGPoint(x: 149, y: gauge.y), 18), "TG0H": ("Gas gauge", CGPoint(x: 155, y: gauge.y), 18),
         "TG0V": ("Gas gauge", CGPoint(x: 152, y: gauge.y + 3), 18),
-        // Th*: two triples on the heat sink that covers the M3 (Apple: "remove two screws from the heat sink").
-        // The hotter triple (Th08-0A) sits at the die edge, the cooler one (Th00-02) out on the far end.
-        "Th08": ("Heat sink · die edge", CGPoint(x: 236, y: 30), 13), "Th09": ("Heat sink · die edge", CGPoint(x: 236, y: 42), 13),
-        "Th0A": ("Heat sink · die edge", CGPoint(x: 236, y: 54), 13),
-        "Th00": ("Heat sink · far end", CGPoint(x: 272, y: 20), 15), "Th01": ("Heat sink · far end", CGPoint(x: 282, y: 42), 15),
-        "Th02": ("Heat sink · far end", CGPoint(x: 272, y: 64), 15),
+        // Th*: two triples on the heat sink over the M3. Positions estimated from the readings themselves
+        // (Calibrate --score: the spots where the conduction model best predicts each triple when it is held out,
+        // idle + load + cooling). The hotter triple sits ~15-20 mm from the die centre, the cooler one ~27 mm.
+        "Th08": ("Heat sink · near die", CGPoint(x: 222, y: 26), 13), "Th09": ("Heat sink · near die", CGPoint(x: 222, y: 38), 13),
+        "Th0A": ("Heat sink · near die", CGPoint(x: 222, y: 50), 13),
+        "Th00": ("Heat sink · outer ring", CGPoint(x: 224, y: 20), 15), "Th01": ("Heat sink · outer ring", CGPoint(x: 234, y: 42), 15),
+        "Th02": ("Heat sink · outer ring", CGPoint(x: 224, y: 64), 15),
     ]
 
     static func place(smc key: String) -> Placement? {

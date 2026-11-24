@@ -188,14 +188,15 @@ final class HeatSolver {
 }
 
 extension HeatSolver {
-    /// Fitted 2026-11-24 with `--fit` on idle, 70 s full-CPU load and cooling snapshots (calib/*.json).
-    /// Held-out passive sensors (heat sink, battery, gas gauge, palm rests): RMS error 5.8 -> 4.0 C,
-    /// mean absolute error 4.7 -> 3.0 C. Largest remaining miss: the heat-sink sensor nearest the die
-    /// under load reads hotter than conduction from the die predicts (its exact spot is inferred).
+    /// Fitted 2026-11-24 with `--fit` on idle, 70 s full-CPU load and cooling snapshots (calib/*.json), after the
+    /// heat-sink sensors were placed from their readings (Layout.swift). Held-out passive sensors (heat sink,
+    /// battery, gas gauge, palm rests): RMS error 5.8 -> about 2 C, mean absolute error 4.7 -> about 1.7 C.
+    /// gSink stays at its physical value: the fit preferred 0.004, which barely changes the internal score but
+    /// leaves the bottom case unrealistically cold (it has no sensor of its own to fit against).
     static let fitted: Params = {
         var p = Params()
-        p.kSink = 636; p.kBoard = 7.56; p.kChip = 11.3; p.kTrackpad = 25.4
-        p.gBattery = 0.00075; p.gSink = 0.015   // fit wanted 0.005 (rms 3.97 vs 3.99); 0.015 keeps the bottom case physical
+        p.kSink = 113; p.kBoard = 7.56; p.kChip = 11.3; p.kTrackpad = 35.8; p.kBattery = 47.7
+        p.gBattery = 0.003; p.gBase = 0.002; p.gSink = 0.015
         p.hInt = 0.0159; p.innerAir = 4
         return p
     }()
