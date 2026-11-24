@@ -1,0 +1,1902 @@
+[
+  {
+    "die" : false,
+    "id" : "smc:T5SP",
+    "inField" : true,
+    "key" : "T5SP",
+    "source" : "SMC",
+    "x" : 46,
+    "y" : 58,
+    "zone" : "5 V supply"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TAOL",
+    "inField" : true,
+    "key" : "TAOL",
+    "source" : "SMC",
+    "x" : 112,
+    "y" : 6,
+    "zone" : "Ambient · hinge"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TB0T",
+    "inField" : true,
+    "key" : "TB0T",
+    "source" : "SMC",
+    "x" : 60,
+    "y" : 118,
+    "zone" : "Battery · left"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TB1T",
+    "inField" : true,
+    "key" : "TB1T",
+    "source" : "SMC",
+    "x" : 152,
+    "y" : 99,
+    "zone" : "Battery · centre"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TB2T",
+    "inField" : true,
+    "key" : "TB2T",
+    "source" : "SMC",
+    "x" : 244,
+    "y" : 118,
+    "zone" : "Battery · right"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TCHP",
+    "inField" : true,
+    "key" : "TCHP",
+    "source" : "SMC",
+    "x" : 40,
+    "y" : 33,
+    "zone" : "Charger"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TCMb",
+    "inField" : false,
+    "key" : "TCMb",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · CPU summary"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TCMz",
+    "inField" : false,
+    "key" : "TCMz",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · CPU summary"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TDBP",
+    "inField" : true,
+    "key" : "TDBP",
+    "source" : "SMC",
+    "x" : 166,
+    "y" : 3,
+    "zone" : "Display backlight"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TDeL",
+    "inField" : true,
+    "key" : "TDeL",
+    "source" : "SMC",
+    "x" : 141,
+    "y" : 3,
+    "zone" : "Display"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TG0B",
+    "inField" : true,
+    "key" : "TG0B",
+    "source" : "SMC",
+    "x" : 60,
+    "y" : 126,
+    "zone" : "Battery · left"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TG0C",
+    "inField" : true,
+    "key" : "TG0C",
+    "source" : "SMC",
+    "x" : 149,
+    "y" : 73,
+    "zone" : "Gas gauge"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TG0H",
+    "inField" : true,
+    "key" : "TG0H",
+    "source" : "SMC",
+    "x" : 155,
+    "y" : 73,
+    "zone" : "Gas gauge"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TG0V",
+    "inField" : true,
+    "key" : "TG0V",
+    "source" : "SMC",
+    "x" : 152,
+    "y" : 76,
+    "zone" : "Gas gauge"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TG1B",
+    "inField" : true,
+    "key" : "TG1B",
+    "source" : "SMC",
+    "x" : 152,
+    "y" : 105,
+    "zone" : "Battery · centre"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TG2B",
+    "inField" : true,
+    "key" : "TG2B",
+    "source" : "SMC",
+    "x" : 244,
+    "y" : 126,
+    "zone" : "Battery · right"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TH0T",
+    "inField" : true,
+    "key" : "TH0T",
+    "source" : "SMC",
+    "x" : 266.39999999999998,
+    "y" : 31,
+    "zone" : "NAND"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TH0x",
+    "inField" : true,
+    "key" : "TH0x",
+    "source" : "SMC",
+    "x" : 268.10000000000002,
+    "y" : 53.5,
+    "zone" : "NAND"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TIOP",
+    "inField" : true,
+    "key" : "TIOP",
+    "source" : "SMC",
+    "x" : 24,
+    "y" : 59,
+    "zone" : "I\/O prox."
+  },
+  {
+    "die" : false,
+    "id" : "smc:TMVR",
+    "inField" : true,
+    "key" : "TMVR",
+    "source" : "SMC",
+    "x" : 180,
+    "y" : 20,
+    "zone" : "Memory VR"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TPD0",
+    "inField" : true,
+    "key" : "TPD0",
+    "source" : "SMC",
+    "x" : 161,
+    "y" : 40.899999999999999,
+    "zone" : "PMU die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TPD1",
+    "inField" : true,
+    "key" : "TPD1",
+    "source" : "SMC",
+    "x" : 164.53553390593274,
+    "y" : 42.364466094067261,
+    "zone" : "PMU die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TPD2",
+    "inField" : true,
+    "key" : "TPD2",
+    "source" : "SMC",
+    "x" : 166,
+    "y" : 45.899999999999999,
+    "zone" : "PMU die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TPD3",
+    "inField" : true,
+    "key" : "TPD3",
+    "source" : "SMC",
+    "x" : 164.53553390593274,
+    "y" : 49.435533905932736,
+    "zone" : "PMU die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TPD4",
+    "inField" : true,
+    "key" : "TPD4",
+    "source" : "SMC",
+    "x" : 161,
+    "y" : 50.899999999999999,
+    "zone" : "PMU die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TPD5",
+    "inField" : true,
+    "key" : "TPD5",
+    "source" : "SMC",
+    "x" : 157.46446609406726,
+    "y" : 49.435533905932736,
+    "zone" : "PMU die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TPD6",
+    "inField" : true,
+    "key" : "TPD6",
+    "source" : "SMC",
+    "x" : 156,
+    "y" : 45.899999999999999,
+    "zone" : "PMU die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TPD7",
+    "inField" : true,
+    "key" : "TPD7",
+    "source" : "SMC",
+    "x" : 157.46446609406726,
+    "y" : 42.364466094067261,
+    "zone" : "PMU die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TPDX",
+    "inField" : true,
+    "key" : "TPDX",
+    "source" : "SMC",
+    "x" : 161,
+    "y" : 45.899999999999999,
+    "zone" : "PMU die max"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TPMP",
+    "inField" : true,
+    "key" : "TPMP",
+    "source" : "SMC",
+    "x" : 161,
+    "y" : 45.899999999999999,
+    "zone" : "PMU prox."
+  },
+  {
+    "die" : false,
+    "id" : "smc:TPSP",
+    "inField" : true,
+    "key" : "TPSP",
+    "source" : "SMC",
+    "x" : 26,
+    "y" : 44,
+    "zone" : "Power supply prox."
+  },
+  {
+    "die" : false,
+    "id" : "smc:TR0Z",
+    "inField" : true,
+    "key" : "TR0Z",
+    "source" : "SMC",
+    "x" : 57.899999999999999,
+    "y" : 42.700000000000003,
+    "zone" : "PMU2 cal."
+  },
+  {
+    "die" : false,
+    "id" : "smc:TR2d",
+    "inField" : true,
+    "key" : "TR2d",
+    "source" : "SMC",
+    "x" : 72,
+    "y" : 30,
+    "zone" : "Regulator"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TR4d",
+    "inField" : true,
+    "key" : "TR4d",
+    "source" : "SMC",
+    "x" : 44,
+    "y" : 28,
+    "zone" : "Regulator"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TR5d",
+    "inField" : true,
+    "key" : "TR5d",
+    "source" : "SMC",
+    "x" : 70,
+    "y" : 56,
+    "zone" : "Regulator"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TRD0",
+    "inField" : true,
+    "key" : "TRD0",
+    "source" : "SMC",
+    "x" : 57.899999999999999,
+    "y" : 37.700000000000003,
+    "zone" : "PMU2 die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TRD1",
+    "inField" : true,
+    "key" : "TRD1",
+    "source" : "SMC",
+    "x" : 61.435533905932736,
+    "y" : 39.164466094067265,
+    "zone" : "PMU2 die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TRD2",
+    "inField" : true,
+    "key" : "TRD2",
+    "source" : "SMC",
+    "x" : 62.899999999999999,
+    "y" : 42.700000000000003,
+    "zone" : "PMU2 die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TRD3",
+    "inField" : true,
+    "key" : "TRD3",
+    "source" : "SMC",
+    "x" : 61.435533905932736,
+    "y" : 46.235533905932741,
+    "zone" : "PMU2 die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TRD4",
+    "inField" : true,
+    "key" : "TRD4",
+    "source" : "SMC",
+    "x" : 57.899999999999999,
+    "y" : 47.700000000000003,
+    "zone" : "PMU2 die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TRD5",
+    "inField" : true,
+    "key" : "TRD5",
+    "source" : "SMC",
+    "x" : 54.364466094067261,
+    "y" : 46.235533905932741,
+    "zone" : "PMU2 die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TRD6",
+    "inField" : true,
+    "key" : "TRD6",
+    "source" : "SMC",
+    "x" : 52.899999999999999,
+    "y" : 42.700000000000003,
+    "zone" : "PMU2 die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TRD7",
+    "inField" : true,
+    "key" : "TRD7",
+    "source" : "SMC",
+    "x" : 54.364466094067261,
+    "y" : 39.164466094067265,
+    "zone" : "PMU2 die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TRDX",
+    "inField" : true,
+    "key" : "TRDX",
+    "source" : "SMC",
+    "x" : 57.899999999999999,
+    "y" : 42.700000000000003,
+    "zone" : "PMU2 die max"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TSCD",
+    "inField" : true,
+    "key" : "TSCD",
+    "source" : "SMC",
+    "x" : 232,
+    "y" : 52,
+    "zone" : "Storage ctrl"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TVA0",
+    "inField" : true,
+    "key" : "TVA0",
+    "source" : "SMC",
+    "x" : 90,
+    "y" : 66,
+    "zone" : "Aux \/ ambient"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TVD0",
+    "inField" : true,
+    "key" : "TVD0",
+    "source" : "SMC",
+    "x" : 126.5,
+    "y" : 48,
+    "zone" : "VDD regulator"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TVS0",
+    "inField" : true,
+    "key" : "TVS0",
+    "source" : "SMC",
+    "x" : 119,
+    "y" : 37,
+    "zone" : "SoC rail VR"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TVS1",
+    "inField" : true,
+    "key" : "TVS1",
+    "source" : "SMC",
+    "x" : 134,
+    "y" : 37,
+    "zone" : "SoC rail VR"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TVSx",
+    "inField" : true,
+    "key" : "TVSx",
+    "source" : "SMC",
+    "x" : 119,
+    "y" : 59,
+    "zone" : "SoC rail VR"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TVs1",
+    "inField" : true,
+    "key" : "TVs1",
+    "source" : "SMC",
+    "x" : 134,
+    "y" : 59,
+    "zone" : "SoC rail VR"
+  },
+  {
+    "die" : false,
+    "id" : "smc:TW0P",
+    "inField" : true,
+    "key" : "TW0P",
+    "source" : "SMC",
+    "x" : 165.80000000000001,
+    "y" : 10.6,
+    "zone" : "Wi-Fi \/ BT"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Te04",
+    "inField" : false,
+    "key" : "Te04",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · E-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Te05",
+    "inField" : false,
+    "key" : "Te05",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · E-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Te06",
+    "inField" : false,
+    "key" : "Te06",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · E-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Te0K",
+    "inField" : false,
+    "key" : "Te0K",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · E-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Te0L",
+    "inField" : false,
+    "key" : "Te0L",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · E-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Te0M",
+    "inField" : false,
+    "key" : "Te0M",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · E-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Te0O",
+    "inField" : false,
+    "key" : "Te0O",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · E-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Te0P",
+    "inField" : false,
+    "key" : "Te0P",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · E-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tg0C",
+    "inField" : false,
+    "key" : "Tg0C",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · GPU"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tg0D",
+    "inField" : false,
+    "key" : "Tg0D",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · GPU"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tg0O",
+    "inField" : false,
+    "key" : "Tg0O",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · GPU"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tg0P",
+    "inField" : false,
+    "key" : "Tg0P",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · GPU"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tg0W",
+    "inField" : false,
+    "key" : "Tg0W",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · GPU"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tg0X",
+    "inField" : false,
+    "key" : "Tg0X",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · GPU"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tg0a",
+    "inField" : false,
+    "key" : "Tg0a",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · GPU"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tg0b",
+    "inField" : false,
+    "key" : "Tg0b",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · GPU"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tg0i",
+    "inField" : false,
+    "key" : "Tg0i",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · GPU"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tg0j",
+    "inField" : false,
+    "key" : "Tg0j",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · GPU"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tg0u",
+    "inField" : false,
+    "key" : "Tg0u",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · GPU"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tg0v",
+    "inField" : false,
+    "key" : "Tg0v",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · GPU"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Th00",
+    "inField" : true,
+    "key" : "Th00",
+    "source" : "SMC",
+    "x" : 224,
+    "y" : 20,
+    "zone" : "Heat sink · outer ring"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Th01",
+    "inField" : true,
+    "key" : "Th01",
+    "source" : "SMC",
+    "x" : 234,
+    "y" : 42,
+    "zone" : "Heat sink · outer ring"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Th02",
+    "inField" : true,
+    "key" : "Th02",
+    "source" : "SMC",
+    "x" : 224,
+    "y" : 64,
+    "zone" : "Heat sink · outer ring"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Th08",
+    "inField" : true,
+    "key" : "Th08",
+    "source" : "SMC",
+    "x" : 222,
+    "y" : 26,
+    "zone" : "Heat sink · near die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Th09",
+    "inField" : true,
+    "key" : "Th09",
+    "source" : "SMC",
+    "x" : 222,
+    "y" : 38,
+    "zone" : "Heat sink · near die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Th0A",
+    "inField" : true,
+    "key" : "Th0A",
+    "source" : "SMC",
+    "x" : 222,
+    "y" : 50,
+    "zone" : "Heat sink · near die"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Tm0B",
+    "inField" : true,
+    "key" : "Tm0B",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 27,
+    "zone" : "Memory (on-package)"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp00",
+    "inField" : false,
+    "key" : "Tp00",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp01",
+    "inField" : false,
+    "key" : "Tp01",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp02",
+    "inField" : false,
+    "key" : "Tp02",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp04",
+    "inField" : false,
+    "key" : "Tp04",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp05",
+    "inField" : false,
+    "key" : "Tp05",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp06",
+    "inField" : false,
+    "key" : "Tp06",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp08",
+    "inField" : false,
+    "key" : "Tp08",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp09",
+    "inField" : false,
+    "key" : "Tp09",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0A",
+    "inField" : false,
+    "key" : "Tp0A",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0C",
+    "inField" : false,
+    "key" : "Tp0C",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0D",
+    "inField" : false,
+    "key" : "Tp0D",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0E",
+    "inField" : false,
+    "key" : "Tp0E",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0G",
+    "inField" : false,
+    "key" : "Tp0G",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0H",
+    "inField" : false,
+    "key" : "Tp0H",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0I",
+    "inField" : false,
+    "key" : "Tp0I",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0K",
+    "inField" : false,
+    "key" : "Tp0K",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0L",
+    "inField" : false,
+    "key" : "Tp0L",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0M",
+    "inField" : false,
+    "key" : "Tp0M",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0O",
+    "inField" : false,
+    "key" : "Tp0O",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0P",
+    "inField" : false,
+    "key" : "Tp0P",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0Q",
+    "inField" : false,
+    "key" : "Tp0Q",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0S",
+    "inField" : false,
+    "key" : "Tp0S",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0T",
+    "inField" : false,
+    "key" : "Tp0T",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0U",
+    "inField" : false,
+    "key" : "Tp0U",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0W",
+    "inField" : false,
+    "key" : "Tp0W",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0X",
+    "inField" : false,
+    "key" : "Tp0X",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0Y",
+    "inField" : false,
+    "key" : "Tp0Y",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0a",
+    "inField" : false,
+    "key" : "Tp0a",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0b",
+    "inField" : false,
+    "key" : "Tp0b",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0c",
+    "inField" : false,
+    "key" : "Tp0c",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0e",
+    "inField" : false,
+    "key" : "Tp0e",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0f",
+    "inField" : false,
+    "key" : "Tp0f",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0g",
+    "inField" : false,
+    "key" : "Tp0g",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0i",
+    "inField" : false,
+    "key" : "Tp0i",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0j",
+    "inField" : false,
+    "key" : "Tp0j",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0k",
+    "inField" : false,
+    "key" : "Tp0k",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0m",
+    "inField" : false,
+    "key" : "Tp0m",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0n",
+    "inField" : false,
+    "key" : "Tp0n",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0o",
+    "inField" : false,
+    "key" : "Tp0o",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0q",
+    "inField" : false,
+    "key" : "Tp0q",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0r",
+    "inField" : false,
+    "key" : "Tp0r",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0s",
+    "inField" : false,
+    "key" : "Tp0s",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0u",
+    "inField" : false,
+    "key" : "Tp0u",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0v",
+    "inField" : false,
+    "key" : "Tp0v",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0w",
+    "inField" : false,
+    "key" : "Tp0w",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0y",
+    "inField" : false,
+    "key" : "Tp0y",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp0z",
+    "inField" : false,
+    "key" : "Tp0z",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp10",
+    "inField" : false,
+    "key" : "Tp10",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp12",
+    "inField" : false,
+    "key" : "Tp12",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp13",
+    "inField" : false,
+    "key" : "Tp13",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp14",
+    "inField" : false,
+    "key" : "Tp14",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp16",
+    "inField" : false,
+    "key" : "Tp16",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp17",
+    "inField" : false,
+    "key" : "Tp17",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp18",
+    "inField" : false,
+    "key" : "Tp18",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp1E",
+    "inField" : false,
+    "key" : "Tp1E",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp1F",
+    "inField" : false,
+    "key" : "Tp1F",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp1H",
+    "inField" : false,
+    "key" : "Tp1H",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp1I",
+    "inField" : false,
+    "key" : "Tp1I",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp1K",
+    "inField" : false,
+    "key" : "Tp1K",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : true,
+    "id" : "smc:Tp1L",
+    "inField" : false,
+    "key" : "Tp1L",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC · P-cluster"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Ts0G",
+    "inField" : true,
+    "key" : "Ts0G",
+    "source" : "SMC",
+    "x" : 217.30000000000001,
+    "y" : 58.054482671904339,
+    "zone" : "SoC package"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Ts0H",
+    "inField" : true,
+    "key" : "Ts0H",
+    "source" : "SMC",
+    "x" : 224.25448267190436,
+    "y" : 51.099999999999994,
+    "zone" : "SoC package"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Ts0I",
+    "inField" : true,
+    "key" : "Ts0I",
+    "source" : "SMC",
+    "x" : 226.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC package"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Ts0K",
+    "inField" : true,
+    "key" : "Ts0K",
+    "source" : "SMC",
+    "x" : 217.30000000000001,
+    "y" : 25.145517328095664,
+    "zone" : "SoC package"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Ts0L",
+    "inField" : true,
+    "key" : "Ts0L",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 22.600000000000001,
+    "zone" : "SoC package"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Ts0M",
+    "inField" : true,
+    "key" : "Ts0M",
+    "source" : "SMC",
+    "x" : 198.30000000000001,
+    "y" : 25.145517328095671,
+    "zone" : "SoC package"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Ts0P",
+    "inField" : true,
+    "key" : "Ts0P",
+    "source" : "SMC",
+    "x" : 47,
+    "y" : 196,
+    "zone" : "Palm rest · left"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Ts0S",
+    "inField" : true,
+    "key" : "Ts0S",
+    "source" : "SMC",
+    "x" : 217.30000000000001,
+    "y" : 58.054482671904339,
+    "zone" : "SoC package"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Ts0T",
+    "inField" : true,
+    "key" : "Ts0T",
+    "source" : "SMC",
+    "x" : 224.25448267190436,
+    "y" : 51.099999999999994,
+    "zone" : "SoC package"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Ts0U",
+    "inField" : true,
+    "key" : "Ts0U",
+    "source" : "SMC",
+    "x" : 226.80000000000001,
+    "y" : 41.600000000000001,
+    "zone" : "SoC package"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Ts0W",
+    "inField" : true,
+    "key" : "Ts0W",
+    "source" : "SMC",
+    "x" : 217.30000000000001,
+    "y" : 25.145517328095664,
+    "zone" : "SoC package"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Ts0X",
+    "inField" : true,
+    "key" : "Ts0X",
+    "source" : "SMC",
+    "x" : 207.80000000000001,
+    "y" : 22.600000000000001,
+    "zone" : "SoC package"
+  },
+  {
+    "die" : false,
+    "id" : "smc:Ts1P",
+    "inField" : true,
+    "key" : "Ts1P",
+    "source" : "SMC",
+    "x" : 256,
+    "y" : 196,
+    "zone" : "Palm rest · right"
+  },
+  {
+    "die" : false,
+    "id" : "hid:NAND CH0 temp:1414410350",
+    "inField" : false,
+    "key" : "NAND CH0 temp",
+    "source" : "HID",
+    "x" : 270.39999999999998,
+    "y" : 31,
+    "zone" : "NAND"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tcal:1414541402",
+    "inField" : false,
+    "key" : "PMU tcal",
+    "source" : "HID",
+    "x" : 161,
+    "y" : 38.899999999999999,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdev1:1414541668",
+    "inField" : false,
+    "key" : "PMU tdev1",
+    "source" : "HID",
+    "x" : 165.49951326780578,
+    "y" : 40.537688898167154,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdev2:1414541924",
+    "inField" : false,
+    "key" : "PMU tdev2",
+    "source" : "HID",
+    "x" : 167.89365427108547,
+    "y" : 44.684462756331484,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdev3:1414542180",
+    "inField" : false,
+    "key" : "PMU tdev3",
+    "source" : "HID",
+    "x" : 167.06217782649108,
+    "y" : 49.399999999999999,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdev4:1414542436",
+    "inField" : false,
+    "key" : "PMU tdev4",
+    "source" : "HID",
+    "x" : 163.39414100327969,
+    "y" : 52.477848345501357,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdev5:1414542692",
+    "inField" : false,
+    "key" : "PMU tdev5",
+    "source" : "HID",
+    "x" : 158.60585899672031,
+    "y" : 52.477848345501357,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdev6:1414542948",
+    "inField" : false,
+    "key" : "PMU tdev6",
+    "source" : "HID",
+    "x" : 154.93782217350892,
+    "y" : 49.399999999999999,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdev7:1414543204",
+    "inField" : false,
+    "key" : "PMU tdev7",
+    "source" : "HID",
+    "x" : 154.10634572891453,
+    "y" : 44.684462756331492,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdev8:1414543460",
+    "inField" : false,
+    "key" : "PMU tdev8",
+    "source" : "HID",
+    "x" : 156.50048673219422,
+    "y" : 40.537688898167154,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdie1:1414541666",
+    "inField" : false,
+    "key" : "PMU tdie1",
+    "source" : "HID",
+    "x" : 165.49951326780578,
+    "y" : 40.537688898167154,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdie2:1414541922",
+    "inField" : false,
+    "key" : "PMU tdie2",
+    "source" : "HID",
+    "x" : 167.89365427108547,
+    "y" : 44.684462756331484,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdie3:1414542178",
+    "inField" : false,
+    "key" : "PMU tdie3",
+    "source" : "HID",
+    "x" : 167.06217782649108,
+    "y" : 49.399999999999999,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdie4:1414542434",
+    "inField" : false,
+    "key" : "PMU tdie4",
+    "source" : "HID",
+    "x" : 163.39414100327969,
+    "y" : 52.477848345501357,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdie5:1414542690",
+    "inField" : false,
+    "key" : "PMU tdie5",
+    "source" : "HID",
+    "x" : 158.60585899672031,
+    "y" : 52.477848345501357,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdie6:1414542946",
+    "inField" : false,
+    "key" : "PMU tdie6",
+    "source" : "HID",
+    "x" : 154.93782217350892,
+    "y" : 49.399999999999999,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdie7:1414543212",
+    "inField" : false,
+    "key" : "PMU tdie7",
+    "source" : "HID",
+    "x" : 154.10634572891453,
+    "y" : 44.684462756331492,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU tdie8:1414543468",
+    "inField" : false,
+    "key" : "PMU tdie8",
+    "source" : "HID",
+    "x" : 156.50048673219422,
+    "y" : 40.537688898167154,
+    "zone" : "PMU"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tcal:1414672474",
+    "inField" : false,
+    "key" : "PMU2 tcal",
+    "source" : "HID",
+    "x" : 64.793654271085458,
+    "y" : 41.484462756331489,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tdev1:1414672740",
+    "inField" : false,
+    "key" : "PMU2 tdev1",
+    "source" : "HID",
+    "x" : 62.399513267805773,
+    "y" : 37.337688898167158,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tdev2:1414672996",
+    "inField" : false,
+    "key" : "PMU2 tdev2",
+    "source" : "HID",
+    "x" : 64.793654271085458,
+    "y" : 41.484462756331489,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tdev3:1414673252",
+    "inField" : false,
+    "key" : "PMU2 tdev3",
+    "source" : "HID",
+    "x" : 63.962177826491072,
+    "y" : 46.200000000000003,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tdev4:1414673508",
+    "inField" : false,
+    "key" : "PMU2 tdev4",
+    "source" : "HID",
+    "x" : 60.294141003279677,
+    "y" : 49.277848345501361,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tdev5:1414673764",
+    "inField" : false,
+    "key" : "PMU2 tdev5",
+    "source" : "HID",
+    "x" : 55.50585899672032,
+    "y" : 49.277848345501361,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tdie1:1414672738",
+    "inField" : false,
+    "key" : "PMU2 tdie1",
+    "source" : "HID",
+    "x" : 62.399513267805773,
+    "y" : 37.337688898167158,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tdie2:1414672994",
+    "inField" : false,
+    "key" : "PMU2 tdie2",
+    "source" : "HID",
+    "x" : 64.793654271085458,
+    "y" : 41.484462756331489,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tdie3:1414673250",
+    "inField" : false,
+    "key" : "PMU2 tdie3",
+    "source" : "HID",
+    "x" : 63.962177826491072,
+    "y" : 46.200000000000003,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tdie4:1414673506",
+    "inField" : false,
+    "key" : "PMU2 tdie4",
+    "source" : "HID",
+    "x" : 60.294141003279677,
+    "y" : 49.277848345501361,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tdie5:1414673762",
+    "inField" : false,
+    "key" : "PMU2 tdie5",
+    "source" : "HID",
+    "x" : 55.50585899672032,
+    "y" : 49.277848345501361,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tdie6:1414674018",
+    "inField" : false,
+    "key" : "PMU2 tdie6",
+    "source" : "HID",
+    "x" : 51.837822173508926,
+    "y" : 46.200000000000003,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tdie7:1414674284",
+    "inField" : false,
+    "key" : "PMU2 tdie7",
+    "source" : "HID",
+    "x" : 51.006345728914539,
+    "y" : 41.484462756331496,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:PMU2 tdie8:1414674540",
+    "inField" : false,
+    "key" : "PMU2 tdie8",
+    "source" : "HID",
+    "x" : 53.400486732194224,
+    "y" : 37.337688898167158,
+    "zone" : "PMU2"
+  },
+  {
+    "die" : false,
+    "id" : "hid:gas gauge battery:1413951554",
+    "inField" : false,
+    "key" : "gas gauge battery #1",
+    "source" : "HID",
+    "x" : 60,
+    "y" : 118,
+    "zone" : "Battery"
+  },
+  {
+    "die" : false,
+    "id" : "hid:gas gauge battery:1413951555",
+    "inField" : false,
+    "key" : "gas gauge battery #2",
+    "source" : "HID",
+    "x" : 152,
+    "y" : 99,
+    "zone" : "Battery"
+  },
+  {
+    "die" : false,
+    "id" : "hid:gas gauge battery:1413951560",
+    "inField" : false,
+    "key" : "gas gauge battery #3",
+    "source" : "HID",
+    "x" : 244,
+    "y" : 118,
+    "zone" : "Battery"
+  },
+  {
+    "die" : false,
+    "id" : "hid:gas gauge battery:1413951574",
+    "inField" : false,
+    "key" : "gas gauge battery #4",
+    "source" : "HID",
+    "x" : 60,
+    "y" : 118,
+    "zone" : "Battery"
+  },
+  {
+    "die" : false,
+    "id" : "hid:gas gauge battery:1413951810",
+    "inField" : false,
+    "key" : "gas gauge battery #5",
+    "source" : "HID",
+    "x" : 152,
+    "y" : 99,
+    "zone" : "Battery"
+  },
+  {
+    "die" : false,
+    "id" : "hid:gas gauge battery:1413952066",
+    "inField" : false,
+    "key" : "gas gauge battery #6",
+    "source" : "HID",
+    "x" : 244,
+    "y" : 118,
+    "zone" : "Battery"
+  }
+]

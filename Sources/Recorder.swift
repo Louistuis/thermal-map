@@ -8,7 +8,7 @@ import UniformTypeIdentifiers
 ///     ThermalMap --record=/path/frames --seconds=150 --fps=2 [--size=1536x864] [--scale=1.25] [--format=png|jpg]
 ///                [--at=60:surface] [--at=110:top] [--at=130:internal] [--at=140:bottom] [--at=20:rainbow]
 ///
-/// Writes frame_00000.png (or .jpg) ... with live sensor data, plus frames.txt (index, seconds, mode, side, corePeak, fieldMax).
+/// Writes sensors.json (every sensor's board position) and frame_00000.png (or .jpg) ... with live sensor data, plus frames.txt (index, seconds, mode, side, corePeak, fieldMax).
 /// `--at=SEC:ACTION` switches the view at that time: surface, internal, top, bottom, fixed, auto (colour range), labels, nolabels,
 /// or a palette name (ironbow, rainbow, arctic, whitehot).
 enum Recorder {
@@ -32,6 +32,15 @@ enum Recorder {
         ThermalModel.renderMode = true
         let model = ThermalModel()
         for a in args where a.hasPrefix("--at=0:") { apply(String(a.dropFirst(7)), model) }
+        // where every sensor sits (board mm, top view), so an edit can draw on the footage
+        let placed: [[String: Any]] = model.sensors.compactMap { s in
+            guard let p = s.placement else { return nil }
+            return ["id": s.id, "key": s.key, "source": s.source, "x": p.point.x, "y": p.point.y,
+                    "zone": p.zone, "inField": p.inField, "die": p.die != nil]
+        }
+        if let d = try? JSONSerialization.data(withJSONObject: placed, options: [.prettyPrinted, .sortedKeys]) {
+            try? d.write(to: dir.appendingPathComponent("sensors.json"))
+        }
         model.start()
 
         let writer = DispatchQueue(label: "recorder.write", qos: .userInitiated)

@@ -21,7 +21,7 @@ const tts = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${cfg.voice
   body: JSON.stringify({
     text,
     model_id: cfg.voice.model,
-    voice_settings: { stability: cfg.voice.stability, similarity_boost: cfg.voice.similarityBoost, style: cfg.voice.style ?? 0 },
+    voice_settings: { stability: cfg.voice.stability, similarity_boost: cfg.voice.similarityBoost, style: cfg.voice.style ?? 0, speed: cfg.voice.speed ?? 1 },
   }),
 });
 if (!tts.ok) { console.error(`TTS failed: ${tts.status} ${await tts.text()}`); process.exit(1); }

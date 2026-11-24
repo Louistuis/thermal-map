@@ -21,7 +21,6 @@ clip() {  # clip <name> <recorded start s> <recorded end s> <screen seconds> [fr
   echo "$NAME: recorded ${A}-${B} s ($count frames) -> $(ffprobe -v error -show_entries format=duration -of csv=p=0 "$OUT/$NAME.mp4") s"
 }
 
-clip idle        0   4   7.6    # shot A, wide, idle
-clip idle-close  4   10  11.4   # shot B, close, still idle
-clip load        10  62  11.2  "$LOADFRAMES"  # shot C, heating up under load
-clip case        64  118 7.8    # shot D, bottom case under load, then cooling
+clip idle   0   10  16.0                  # internals at idle: wide, the parts, the solver
+clip load   10  62  14.4  "$LOADFRAMES"   # flow, under load, the held-out sensor test
+clip case   64  110 7.6                   # bottom case, then the end card
