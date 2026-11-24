@@ -260,11 +260,7 @@ struct ChassisView: View {
                     .frame(width: w, height: h)
                     .blur(radius: 22).offset(x: ox, y: oy + 14)
                 // the field crossfades between updates, so 5 Hz data reads as continuous motion
-                ZStack {
-                    FieldLayer(frame: fs.frame, map: map, isotherms: m.showIsotherms)
-                        .id(fs.frame.serial)
-                        .transition(.opacity)
-                }
+                CrossfadeField(frame: fs.frame, map: map, isotherms: m.showIsotherms)
                 .frame(width: geo.size.width, height: geo.size.height)
                 .mask(shape.frame(width: w, height: h).offset(x: ox, y: oy).frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading))
                 Canvas { ctx, size in drawOverlay(ctx, size, map) }
@@ -286,6 +282,35 @@ struct ChassisView: View {
         func top(fromView v: CGPoint) -> CGPoint {
             let x = (v.x - ox) / s, y = (v.y - oy) / s
             return CGPoint(x: mirror ? Board.width - x : x, y: y)
+        }
+    }
+
+    /// The new frame is drawn fully opaque underneath; only the previous frame fades out on top of it, so the
+    /// field never dips in brightness between updates.
+    struct CrossfadeField: View {
+        let frame: Frame
+        let map: Mapper
+        let isotherms: Bool
+        @State private var last: Frame?
+        @State private var prev: Frame?
+        @State private var fade: Double = 0
+        var body: some View {
+            ZStack(alignment: .topLeading) {
+                FieldLayer(frame: frame, map: map, isotherms: isotherms)
+                if let prev, fade > 0.001 {
+                    FieldLayer(frame: prev, map: map, isotherms: isotherms).opacity(fade)
+                }
+            }
+            .onAppear { last = frame }
+            .onChange(of: frame.serial) {
+                guard !ThermalModel.renderMode else { last = frame; return }
+                prev = last
+                last = frame
+                var t = Transaction(); t.disablesAnimations = true
+                withTransaction(t) { fade = 1 }
+                // start the fade on the next runloop pass, after the opaque old frame has been committed
+                DispatchQueue.main.async { withAnimation(.easeOut(duration: 0.22)) { fade = 0 } }
+            }
         }
     }
 

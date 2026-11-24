@@ -97,6 +97,8 @@ struct HistoryPoint { var soc: Double; var pmu: Double; var battery: Double; var
 
 final class ThermalModel: ObservableObject {
     nonisolated(unsafe) static var renderMode = false
+    /// THERMALMAP_ALWAYS_RENDER=1 keeps the map updating while the window is hidden (flicker tests).
+    static let alwaysRender = ProcessInfo.processInfo.environment["THERMALMAP_ALWAYS_RENDER"] == "1"
     // sidebar data (2 Hz)
     @Published var sensors: [Sensor] = []
     @Published var history: [HistoryPoint] = []
@@ -213,7 +215,7 @@ final class ThermalModel: ObservableObject {
 
     private func tickFrame() {
         // no visible window (minimised, hidden, fully covered): skip the field work entirely
-        if !ThermalModel.renderMode && !NSApp.windows.contains(where: { $0.isVisible && $0.occlusionState.contains(.visible) }) { return }
+        if !ThermalModel.renderMode && !ThermalModel.alwaysRender && !NSApp.windows.contains(where: { $0.isVisible && $0.occlusionState.contains(.visible) }) { return }
         // exponential approach toward the latest raw sample gives smooth, continuous motion between 2 Hz samples
         if _sensorsSilent.count != sensors.count { _sensorsSilent = sensors }
         var current = _sensorsSilent
@@ -236,8 +238,9 @@ final class ThermalModel: ObservableObject {
         if smoothHot == nil || hypot(f.hotspot.x - smoothHot!.x, f.hotspot.y - smoothHot!.y) > 25 { smoothHot = f.hotspot }
         else { smoothHot!.x += (f.hotspot.x - smoothHot!.x) * 0.3; smoothHot!.y += (f.hotspot.y - smoothHot!.y) * 0.3 }
         f.hotspot = smoothHot!
-        if ThermalModel.renderMode { frameStore.frame = f }
-        else { withAnimation(.easeInOut(duration: 0.24)) { frameStore.frame = f } }
+        // no animation transaction here: images swapped inside one crossfade both at half opacity, which
+        // let the background show through (a 5 Hz blink). The map crossfades itself, see CrossfadeField.
+        frameStore.frame = f
     }
     private var _sensorsSilent: [Sensor] = []
     private var frameSerial = 0
