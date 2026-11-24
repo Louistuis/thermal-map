@@ -75,9 +75,15 @@ enum SensorMap {
         Int(s.utf8.reduce(UInt32(2166136261)) { ($0 ^ UInt32($1)) &* 16777619 } % UInt32(mod))
     }
     private static var a: MacModel.Anchors { MacModel.active.anchors }
+    /// maxima of the PMU and PMU2 die rings
+    static let summaryKeys: Set<String> = ["TPDX", "TRDX"]
 
     static func place(smc key: String) -> Placement? {
-        if let f = MacModel.active.sensors[key] { return Placement(zone: f.0, point: f.1, sigma: f.2) }
+        if let f = MacModel.active.sensors[key] {
+            // summary keys (a maximum over other sensors) are listed but never pinned: pinning them on top of
+            // the sensors they summarise would average two different quantities into one spot
+            return Placement(zone: f.0, point: f.1, sigma: f.2, inField: !summaryKeys.contains(key))
+        }
         let die = Board.dieCenter
         let p2 = key.prefix(2)
         switch p2 {

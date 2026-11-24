@@ -28,11 +28,20 @@ if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--render=") }) {
     if CommandLine.arguments.contains("--labels") { model.showLabels = true }
     if CommandLine.arguments.contains("--no-isotherms") { model.showIsotherms = false }
     if CommandLine.arguments.contains("--no-parts") { model.showParts = false }
+    if CommandLine.arguments.contains("--no-sensors") { model.showSensors = false }
+    if CommandLine.arguments.contains("--fixed-range") { model.autoRange = false }
+    if let p = CommandLine.arguments.first(where: { $0.hasPrefix("--palette=") }),
+       let pal = Palette.allCases.first(where: { $0.title.lowercased() == p.dropFirst(10).lowercased() }) { model.palette = pal }
+    var size = CGSize(width: 1440, height: 860)
+    if let a = CommandLine.arguments.first(where: { $0.hasPrefix("--size=") }) {
+        let wh = a.dropFirst(7).split(separator: "x").compactMap { Double($0) }
+        if wh.count == 2 { size = CGSize(width: wh[0], height: wh[1]) }
+    }
     if let h = CommandLine.arguments.first(where: { $0.hasPrefix("--hl=") }) { model.highlighted = String(h.dropFirst(5)) }
     model.start()
     DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
         MainActor.assumeIsolated {
-            let r = ImageRenderer(content: ContentView(m: model).preferredColorScheme(.dark).frame(width: 1440, height: 860).environment(\.colorScheme, .dark))
+            let r = ImageRenderer(content: ContentView(m: model).preferredColorScheme(.dark).frame(width: size.width, height: size.height).environment(\.colorScheme, .dark))
             r.scale = 2
             let f = model.frame
             print(String(format: "mode=%@ ambient=%.1f fieldMin=%.1f fieldMax=%.1f corePeak=%.1f", model.mode.rawValue, f.ambient, f.coldValue, f.hotValue, f.corePeak))
@@ -49,6 +58,8 @@ if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--render=") }) {
     Recorder.run(CommandLine.arguments)
 } else if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--snapshot=") }) {
     Calibrate.snapshot(to: String(arg.dropFirst("--snapshot=".count)))
+} else if CommandLine.arguments.contains("--selftest") {
+    SelfTest.run()
 } else if CommandLine.arguments.contains("--dump") {
     Calibrate.dump()
 } else if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--score=") }) {

@@ -8,7 +8,7 @@ struct Sensor: Identifiable {
     let key: String
     let source: String        // "SMC" or "HID"
     let type: String
-    let placement: Placement?
+    var placement: Placement?
     var raw: Double? = nil
     var value: Double = .nan  // display-smoothed
     var min: Double = .infinity
@@ -160,6 +160,12 @@ final class ThermalModel: ObservableObject {
             list.append(Sensor(id: s.id, key: s.name, source: "HID", type: "event", placement: SensorMap.place(hid: s.name)))
         }
         hidCount = hid.list.count
+        // SoC package keys go evenly round the package ring, in key order (a hash put two on one spot)
+        let ring = list.indices.filter { list[$0].placement?.zone == "SoC package" }.sorted { list[$0].key < list[$1].key }
+        for (n, i) in ring.enumerated() {
+            let a = Double(n) / Double(ring.count) * 2 * .pi - .pi / 2, r = MacModel.active.anchors.packageRadius
+            list[i].placement?.point = CGPoint(x: Board.dieCenter.x + r * cos(a), y: Board.dieCenter.y + r * sin(a))
+        }
         sensors = list
         layoutDie()
     }

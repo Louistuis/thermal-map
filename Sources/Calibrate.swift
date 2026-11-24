@@ -98,8 +98,21 @@ enum Calibrate {
         return Score(rms: (se / max(n, 1)).squareRoot(), mae: ae / max(n, 1), worst: worst)
     }
 
+    static let currentPlacement: [String: CGPoint] = {
+        var d: [String: CGPoint] = [:]
+        for s in ThermalModel().sensors where s.source == "SMC" { if let p = s.placement, p.inField { d[s.key] = p.point } }
+        return d
+    }()
+
     static func load(_ paths: [String]) -> [Snapshot] {
         paths.compactMap { p in (try? Data(contentsOf: URL(fileURLWithPath: p))).flatMap { try? JSONDecoder().decode(Snapshot.self, from: $0) } }
+            .map { snap in
+                // re-place every pin with the current layout, so stored snapshots follow layout changes
+                var s = snap
+                s.pins.removeAll { SensorMap.summaryKeys.contains($0.key) }   // older snapshots pinned them
+                for i in s.pins.indices { if let p = currentPlacement[s.pins[i].key] { s.pins[i].at = p } }
+                return s
+            }
     }
     /// Score the shipped constants only; ENV TM_MOVE="KEY:dx:dy,..." shifts pins (placement experiments).
     static func scoreOnly(_ paths: [String]) {
@@ -117,10 +130,7 @@ enum Calibrate {
     }
 
     static func fit(_ paths: [String]) {
-        let snaps = paths.compactMap { p -> Snapshot? in
-            guard let d = try? Data(contentsOf: URL(fileURLWithPath: p)) else { print("cannot read \(p)"); return nil }
-            return try? JSONDecoder().decode(Snapshot.self, from: d)
-        }
+        let snaps = load(paths)
         guard !snaps.isEmpty else { exit(1) }
         print("held-out groups per snapshot:", groups(snaps[0].pins).map { $0.map { snaps[0].pins[$0].key }.joined(separator: "+") })
         var best = HeatSolver.Params()   // fit from the hand-tuned physical starting point

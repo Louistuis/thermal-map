@@ -90,13 +90,15 @@ final class HeatSolver {
             let rc = r / HeatSolver.dx
             let x0 = max(0, Int((cx - rc).rounded(.down))), x1 = min(nx - 1, Int((cx + rc).rounded(.up)))
             let y0 = max(0, Int((cy - rc).rounded(.down))), y1 = min(ny - 1, Int((cy + rc).rounded(.up)))
-            var hit = false
+            // always the 2x2 cells around the point (so the bilinear field reads exactly the sensor's value at
+            // its spot), plus every cell within the pin's radius
+            let fx0 = Int(cx.rounded(.down)), fy0 = Int(cy.rounded(.down))
             if x0 <= x1 && y0 <= y1 {
-                for y in y0...y1 { for x in x0...x1 where hypot(Double(x) - cx, Double(y) - cy) <= rc {
-                    sum[y * nx + x] += Float(p.t); cnt[y * nx + x] += 1; hit = true
+                for y in y0...y1 { for x in x0...x1 {
+                    let core = (x == fx0 || x == fx0 + 1) && (y == fy0 || y == fy0 + 1)
+                    if core || hypot(Double(x) - cx, Double(y) - cy) <= rc { sum[y * nx + x] += Float(p.t); cnt[y * nx + x] += 1 }
                 } }
-            }
-            if !hit {
+            } else {
                 let x = min(nx - 1, max(0, Int(cx.rounded()))), y = min(ny - 1, max(0, Int(cy.rounded())))
                 sum[y * nx + x] += Float(p.t); cnt[y * nx + x] += 1
             }
