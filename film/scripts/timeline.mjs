@@ -10,20 +10,21 @@ const { words } = JSON.parse(readFileSync(join(root, "public/vo.json"), "utf8"))
 
 // [first word, last word, gap before this phrase in seconds]
 const PHRASES = [
-  [0, 8, 0.55], //   Inside a MacBook Air, 205 sensors are measuring heat.
-  [9, 16, 0.36], //  Thermal Map reads every one of them, live.
-  [17, 24, 0.4], //  Each reading sits on the part it measures:
-  [25, 26, 0.3], //  the chip,
-  [27, 29, 0.3], //  the heat sink,
-  [30, 31, 0.3], //  the battery.
-  [32, 42, 0.42], // In between, it solves the heat equation five times a second.
-  [43, 54, 0.4], //  Heat races through the aluminum heat sink and crawls through the battery.
-  [55, 66, 0.42], // Put it under load and watch the M3 heat up and spread.
-  [67, 85, 0.45], // To keep it honest, we hide sensors from the model, and it predicts them to within about two degrees,
-  [86, 96, 0.36], // or look at the outside the way a thermal camera would.
-  [97, 102, 0.6], // Thermal Map, free and open source.
+  [0, 12, 0.45], //  Thermal Map was made for one machine: the 13-inch MacBook Air with M3.
+  [13, 21, 0.38], // Inside, two hundred and five sensors are measuring heat,
+  [22, 29, 0.12], // and it reads every one of them, live.
+  [30, 37, 0.36], // Each reading sits on the part it measures:
+  [38, 39, 0.26], // the chip,
+  [40, 42, 0.26], // the heat sink,
+  [43, 44, 0.26], // the battery.
+  [45, 55, 0.36], // In between, it solves the heat equation five times a second.
+  [56, 67, 0.34], // Heat races through the aluminium heat sink and crawls through the battery.
+  [68, 79, 0.36], // Put it under load and watch the M3 heat up and spread.
+  [80, 97, 0.38], // To keep it honest, we hide sensors from the model, and it predicts them within about two degrees.
+  [98, 108, 0.36], // Or look at the outside, the way a thermal camera would.
+  [109, 114, 0.5], // Thermal Map, free and open source.
 ];
-const HEAD = 0.05, TAIL = 0.14, END_HOLD = 2.1;
+const HEAD = 0.05, TAIL = 0.12, END_HOLD = 1.9;
 
 let t = 0;
 const phrases = [];

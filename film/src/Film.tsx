@@ -107,7 +107,7 @@ const DrawCircle: React.FC<{ c: { x: number; y: number }; rad: number; p: number
 
 /** Small label pill anchored at a source-pixel point (bottom edge at the point); size stays constant on screen. */
 const Tag: React.FC<{ at: { x: number; y: number }; text: string; o: number; s: number; align?: "left" | "center" | "right"; size?: number }> = ({
-  at: p, text, o, s, align = "left", size = 17,
+  at: p, text, o, s, align = "left", size = 22,
 }) => {
   const shift = align === "left" ? "0%" : align === "center" ? "-50%" : "-100%";
   return (
@@ -149,8 +149,17 @@ type Ctx = { t: number; s: number; tall: boolean };
 const IdleMarks: React.FC<Ctx> = ({ t, s }) => {
   const els: React.ReactNode[] = [];
   const tags: React.ReactNode[] = [];
+  // "the 13-inch MacBook Air with M3": the laptop's outline draws itself, with the model as a tag
+  const mb = at(8) - 0.15;
+  const mo = env(t, mb, at(13) + 0.2, 0.2, 0.5);
+  if (mo > 0) {
+    const shell = rectPx(0, 0, BW, 215);
+    els.push(<DrawRect key="mb" r={shell} p={ramp(t, mb, mb + 1.2)} o={mo} s={s} radius={11 * MM + 10} pad={10} />);
+    const p = px(152, 0);
+    tags.push(<Tag key="tmb" at={{ x: p.x, y: p.y - 26 }} text="MacBook Air 13-inch · M3" o={mo} s={s} align="center" size={24} />);
+  }
   // "205 sensors": a ripple through every sensor dot, spreading out from the die
-  const r0 = at(4) - 0.1;
+  const r0 = at(14) - 0.1;
   if (t > r0 && t < r0 + 2.4) {
     const die = px(DIE.x, DIE.y);
     SENSORS.forEach((sn, i) => {
@@ -167,14 +176,14 @@ const IdleMarks: React.FC<Ctx> = ({ t, s }) => {
     const m3 = rectPx(PART.m3[0], PART.m3[1], PART.m3[2], PART.m3[3]);
     els.push(<rect key="die" x={m3.x} y={m3.y} width={m3.w} height={m3.h} rx={8} fill={ICE} opacity={dk * 0.16} />);
   }
-  const sensorsTag = env(t, at(4), at(9) + 0.3, 0.35, 0.4);
+  const sensorsTag = env(t, at(14), at(22) + 0.3, 0.35, 0.4);
   if (sensorsTag > 0) {
     const p = px(152, 0);
-    tags.push(<Tag key="t205" at={{ x: p.x, y: p.y - 26 }} text="205 sensors" o={sensorsTag} s={s} align="center" size={19} />);
+    tags.push(<Tag key="t205" at={{ x: p.x, y: p.y - 26 }} text="205 sensors" o={sensorsTag} s={s} align="center" size={24} />);
   }
 
   // the chip, the heat sink, the battery
-  const chip = at(25) - 0.15, sink = at(28) - 0.15, bat = at(30) - 0.15, out = at(32) + 0.1;
+  const chip = at(38) - 0.15, sink = at(41) - 0.15, bat = at(43) - 0.15, out = at(45) + 0.1;
   const m3 = rectPx(PART.m3[0], PART.m3[1], PART.m3[2], PART.m3[3]), hs = rectPx(PART.sink[0], PART.sink[1], PART.sink[2], PART.sink[3]);
   if (t > chip && t < out) {
     const o = env(t, chip, sink + 0.5, 0.15, 0.5);
@@ -196,7 +205,7 @@ const IdleMarks: React.FC<Ctx> = ({ t, s }) => {
   }
 
   // "solves the heat equation, five times a second": one slow pass, then five quick ones at 5 Hz
-  const solve = at(35) - 0.1;
+  const solve = at(48) - 0.1;
   const shell = rectPx(0, 0, BW, 215);
   const sweep = (k: number, key: string, a: number) => {
     const x = shell.x + shell.w * k;
@@ -204,15 +213,15 @@ const IdleMarks: React.FC<Ctx> = ({ t, s }) => {
     els.push(<line key={key + "l"} x1={x} y1={shell.y} x2={x} y2={shell.y + shell.h} stroke={ICE} strokeWidth={1.6 / s} opacity={a} style={{ filter: glow(s) }} />);
   };
   if (t > solve && t < solve + 1.1) sweep(ease((t - solve) / 1.1), "sw", Math.sin(Math.PI * (t - solve) / 1.1));
-  const five = at(39) - 0.05;
+  const five = at(52) - 0.05;
   for (let i = 0; i < 5; i++) {
     const a = five + i * 0.2;
     if (t > a && t < a + 0.2) sweep((t - a) / 0.2, `f${i}`, 0.75);
   }
-  const eq = env(t, solve, at(43) - 0.1, 0.35, 0.4);
+  const eq = env(t, solve, at(56) - 0.1, 0.35, 0.4);
   if (eq > 0) {
     const p = px(152, 215);
-    tags.push(<Tag key="eq" at={{ x: p.x, y: p.y + 58 }} text="∇ · (k ∇T) = 0" o={eq} s={s} align="center" size={20} />);
+    tags.push(<Tag key="eq" at={{ x: p.x, y: p.y + 58 }} text="∇ · (k ∇T) = 0" o={eq} s={s} align="center" size={25} />);
   }
   return (
     <>
@@ -234,8 +243,8 @@ const LoadMarks: React.FC<Ctx> = ({ t, s }) => {
   const els: React.ReactNode[] = [];
   const tags: React.ReactNode[] = [];
   // fast flow along the aluminium heat sink, from the die outward; slow creep into the battery
-  const fastA = at(44) - 0.2, fastB = at(51) + 0.2;
-  const fo = env(t, fastA, at(55) - 0.2, 0.4, 0.5);
+  const fastA = at(57) - 0.2, fastB = at(64) + 0.2;
+  const fo = env(t, fastA, at(68) - 0.2, 0.4, 0.5);
   if (fo > 0) {
     for (const y of [26, 41.6, 57]) {
       els.push(<Flow key={`f${y}`} pts={[px(222, y), px(284, y)]} t={t} speed={260} o={fo} s={s} />);
@@ -243,7 +252,7 @@ const LoadMarks: React.FC<Ctx> = ({ t, s }) => {
     const p = px(254, 14);
     tags.push(<Tag key="fast" at={{ x: p.x, y: p.y - 12 }} text="Aluminium · fast" o={fo} s={s} align="center" />);
   }
-  const so = env(t, fastB, at(55) - 0.1, 0.4, 0.5);
+  const so = env(t, fastB, at(68) - 0.1, 0.4, 0.5);
   if (so > 0) {
     for (const x of [175, 205, 235]) {
       els.push(<Flow key={`s${x}`} pts={[px(x, 66), px(x, 92)]} t={t} speed={22} o={so} s={s} />);
@@ -253,18 +262,18 @@ const LoadMarks: React.FC<Ctx> = ({ t, s }) => {
   }
 
   // under load: the M3 outlined, then rings spreading out with "spread"
-  const lo = env(t, at(55) - 0.1, at(67) - 0.2, 0.35, 0.45);
+  const lo = env(t, at(68) - 0.1, at(80) - 0.2, 0.35, 0.45);
   if (lo > 0) {
     const p = px(152, 0);
-    tags.push(<Tag key="load" at={{ x: p.x, y: p.y - 26 }} text="Under load" o={lo} s={s} align="center" size={19} />);
+    tags.push(<Tag key="load" at={{ x: p.x, y: p.y - 26 }} text="Under load" o={lo} s={s} align="center" size={24} />);
   }
   const die = px(DIE.x, DIE.y);
-  const m3t = at(62) - 0.15;
-  if (t > m3t && t < at(67)) {
-    const o = env(t, m3t, at(67), 0.12, 0.5);
+  const m3t = at(75) - 0.15;
+  if (t > m3t && t < at(80)) {
+    const o = env(t, m3t, at(80), 0.12, 0.5);
     els.push(<DrawCircle key="m3c" c={die} rad={19 * MM} p={ramp(t, m3t, m3t + 0.6)} o={o} s={s} />);
   }
-  const sp = at(66) - 0.25;
+  const sp = at(79) - 0.25;
   for (let i = 0; i < 3; i++) {
     const a = sp + i * 0.28;
     if (t > a && t < a + 1.3) {
@@ -274,12 +283,12 @@ const LoadMarks: React.FC<Ctx> = ({ t, s }) => {
   }
 
   // the held-out test: three heat-sink sensors hidden, then predicted
-  const hide = at(72) - 0.1, pred = at(79) - 0.1, two = at(84) - 0.1, end = at(86) + 0.2;
-  if (t > at(67) && t < end + 0.4) {
-    const o = env(t, at(67), end + 0.3, 0.3, 0.5);
+  const hide = at(85) - 0.1, pred = at(92) - 0.1, two = at(96) - 0.1, end = at(98) + 0.2;
+  if (t > at(80) && t < end + 0.4) {
+    const o = env(t, at(80), end + 0.3, 0.3, 0.5);
     HIDDEN.forEach((sn, i) => {
       const c = px(sn.x, sn.y);
-      els.push(<DrawCircle key={`hc${i}`} c={c} rad={22} p={ramp(t, at(67) + i * 0.1, at(67) + 0.5 + i * 0.1)} o={o} s={s} dash={t > hide} width={1.4} />);
+      els.push(<DrawCircle key={`hc${i}`} c={c} rad={22} p={ramp(t, at(80) + i * 0.1, at(80) + 0.5 + i * 0.1)} o={o} s={s} dash={t > hide} width={1.4} />);
       const hidden = ramp(t, hide, hide + 0.35) * o;
       els.push(<circle key={`hd${i}`} cx={c.x} cy={c.y} r={11} fill={BG} opacity={hidden * 0.92} />);
       const pr = ramp(t, pred + i * 0.12, pred + 0.4 + i * 0.12) * o;
@@ -307,17 +316,17 @@ const LoadMarks: React.FC<Ctx> = ({ t, s }) => {
 };
 
 const CaseMarks: React.FC<Ctx> = ({ t, s }) => {
-  const a = at(90) - 0.2;
-  const o = env(t, a, at(97) + 0.1, 0.2, 0.6);
+  const a = at(102) - 0.2;
+  const o = env(t, a, at(109) + 0.1, 0.2, 0.6);
   if (o <= 0) return null;
   const shell = rectPx(0, 0, BW, 215);
-  const p = px(152, 0);
+  const p = px(152, 203);
   return (
     <>
       <svg width={SW} height={SH} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
         <DrawRect r={shell} p={ramp(t, a, a + 1.1)} o={o} s={s} radius={11 * MM + 10} pad={10} />
       </svg>
-      <Tag at={{ x: p.x, y: p.y - 26 }} text="Bottom case" o={o} s={s} align="center" size={19} />
+      <Tag at={{ x: p.x, y: p.y }} text="Bottom case" o={o} s={s} align="center" size={24} />
     </>
   );
 };
@@ -362,7 +371,8 @@ const Card: React.FC<{ len: number; end?: boolean }> = ({ len, end }) => {
         <div style={{ fontSize: (end ? 92 : 104) * u, fontWeight: 600, color: "#fff", letterSpacing: -2.2 * u }}>Thermal Map</div>
         {end && (
           <>
-            <div style={{ marginTop: 18 * u, fontSize: 34 * u, fontWeight: 400, color: "rgba(255,255,255,0.62)" }}>Free and open source.</div>
+            <div style={{ marginTop: 14 * u, fontSize: 26 * u, fontWeight: 500, color: "rgba(255,255,255,0.55)" }}>Made for MacBook Air 13-inch with M3</div>
+            <div style={{ marginTop: 26 * u, fontSize: 34 * u, fontWeight: 400, color: "rgba(255,255,255,0.78)" }}>Free and open source.</div>
             <div style={{ marginTop: 34 * u, fontSize: 26 * u, fontWeight: 500, color: "rgba(161,209,255,0.75)", letterSpacing: 0.2 * u }}>
               github.com/Louistuis/thermal-map
             </div>
@@ -380,40 +390,43 @@ function paths(tall: boolean) {
   const map = (t: number, vw: number) => kmm(t, 152, 107.5, vw);
   return {
     idle: [
-      kf(0.9, 0.5, 0.5, 1.0),
-      kf(at(9) - 0.3, 0.47, 0.5, tall ? 0.78 : 0.93),
-      map(at(9) + 0.45, tall ? 0.66 : 0.78),
-      map(at(17) - 0.1, tall ? 0.64 : 0.75),
-      kmm(at(24), 214, 46, 0.6 * z),
-      kmm(at(25) - 0.1, DIE.x, DIE.y, 0.42 * z),
-      kmm(at(27) - 0.05, 236, 41, 0.5 * z),
-      kmm(at(30) - 0.05, 152, 118, tall ? 0.56 : 0.62),
-      map(at(32) + 0.55, tall ? 0.66 : 0.8),
-      map(at(43), tall ? 0.64 : 0.77),
+      kf(1.9, 0.5, 0.5, 1.0),
+      kf(at(13) - 0.2, 0.49, 0.5, 0.97),
+      kf(at(22) - 0.3, 0.47, 0.5, tall ? 0.78 : 0.93),
+      map(at(22) + 0.45, tall ? 0.66 : 0.78),
+      map(at(30) - 0.1, tall ? 0.64 : 0.75),
+      kmm(at(37), 214, 46, 0.6 * z),
+      kmm(at(38) - 0.1, DIE.x, DIE.y, 0.42 * z),
+      kmm(at(40) - 0.55, DIE.x + 2, DIE.y, 0.41 * z),
+      kmm(at(40) + 0.05, 238, 42, 0.44 * z),
+      kmm(at(43) - 0.5, 238, 43, 0.45 * z),
+      kmm(at(43) + 0.15, 152, 128, tall ? 0.6 : 0.66),
+      map(at(45) + 0.55, tall ? 0.66 : 0.8),
+      map(at(56), tall ? 0.64 : 0.77),
     ],
     load: [
-      kmm(at(43) - 0.25, 222, 62, 0.62 * z),
-      kmm(at(50), 212, 76, 0.6 * z),
-      map(at(55) + 0.5, tall ? 0.66 : 0.8),
-      kmm(at(62) - 0.1, DIE.x, DIE.y + 6, 0.48 * z),
-      kmm(at(66) + 0.2, 200, 60, 0.6 * z),
-      kmm(at(67) + 0.6, 228, 40, 0.4 * z),
-      kmm(at(86), 226, 40, 0.37 * z),
+      kmm(at(56) - 0.25, 222, 62, 0.62 * z),
+      kmm(at(63), 212, 76, 0.6 * z),
+      map(at(68) + 0.5, tall ? 0.66 : 0.8),
+      kmm(at(75) - 0.1, DIE.x, DIE.y + 6, 0.48 * z),
+      kmm(at(79) + 0.2, 200, 60, 0.6 * z),
+      kmm(at(80) + 0.6, 228, 40, 0.4 * z),
+      kmm(at(98), 226, 40, 0.37 * z),
     ],
-    cased: [map(at(86) - 0.4, tall ? 0.7 : 0.84), map(at(97) + 1.5, tall ? 0.64 : 0.77)],
+    cased: [map(at(98) - 0.4, tall ? 0.7 : 0.84), map(at(109) + 1.5, tall ? 0.64 : 0.77)],
   };
 }
 
 export const Film: React.FC<{ tall?: boolean }> = ({ tall = false }) => {
   const p = paths(tall);
   const f = (s: number) => Math.round(s * FPS);
-  const idleTo = at(43) + 0.35, loadFrom = at(43) - 0.3;
-  const loadTo = at(86) + 0.25, caseFrom = at(86) - 0.4;
-  const endFrom = at(97) - 0.3;
+  const idleTo = at(56) + 0.35, loadFrom = at(56) - 0.3;
+  const loadTo = at(98) + 0.25, caseFrom = at(98) - 0.4;
+  const endFrom = at(109) - 0.3;
   return (
     <AbsoluteFill style={{ background: BG }}>
-      <Sequence from={f(0.9)} durationInFrames={f(idleTo - 0.9)}>
-        <Section src="clips/idle.mp4" from={0.9} to={idleTo} keys={p.idle} fadeIn={0.5} Marks={IdleMarks} tall={tall} />
+      <Sequence from={f(1.9)} durationInFrames={f(idleTo - 1.9)}>
+        <Section src="clips/idle.mp4" from={1.9} to={idleTo} keys={p.idle} fadeIn={0.5} Marks={IdleMarks} tall={tall} />
       </Sequence>
       <Sequence from={f(loadFrom)} durationInFrames={f(loadTo - loadFrom)}>
         <Section src="clips/load.mp4" from={loadFrom} to={loadTo} keys={p.load} fadeIn={0.6} Marks={LoadMarks} tall={tall} />
@@ -428,8 +441,8 @@ export const Film: React.FC<{ tall?: boolean }> = ({ tall = false }) => {
         />
       )}
 
-      <Sequence from={0} durationInFrames={f(1.45)}>
-        <Card len={1.45} />
+      <Sequence from={0} durationInFrames={f(2.4)}>
+        <Card len={2.4} />
       </Sequence>
       <Sequence from={f(endFrom)} durationInFrames={f(DURATION_S - endFrom)}>
         <Card len={DURATION_S - endFrom} end />

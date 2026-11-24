@@ -6,16 +6,16 @@
     "stability": 0.6,
     "similarityBoost": 0.8,
     "style": 0.08,
-    "speed": 1.1
+    "speed": 1.12
   },
   "script": [
-    "Inside a MacBook Air, two hundred and five sensors are measuring heat.",
-    "Thermal Map reads every one of them, live.",
+    "Thermal Map was made for one machine: the 13-inch MacBook Air with M3.",
+    "Inside, two hundred and five sensors are measuring heat, and it reads every one of them, live.",
     "Each reading sits on the part it measures. The chip. The heat sink. The battery.",
     "In between, it solves the heat equation, five times a second.",
     "Heat races through the aluminium heat sink, and crawls through the battery.",
     "Put it under load, and watch the M3 heat up, and spread.",
-    "To keep it honest, we hide sensors from the model, and it predicts them to within about two degrees.",
+    "To keep it honest, we hide sensors from the model, and it predicts them within about two degrees.",
     "Or look at the outside, the way a thermal camera would.",
     "Thermal Map. Free, and open source."
   ]
